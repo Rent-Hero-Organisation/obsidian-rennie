@@ -1,10 +1,10 @@
-import { App, TFile, TFolder, Notice } from "obsidian";
-import { PipAction } from "./types";
+import { App, TFile, Notice } from "obsidian";
+import { OpenClawAction } from "./types";
 
 export class ActionExecutor {
   constructor(private app: App) {}
 
-  async execute(actions: PipAction[]): Promise<{ success: number; failed: number }> {
+  async execute(actions: OpenClawAction[]): Promise<{ success: number; failed: number }> {
     let success = 0;
     let failed = 0;
 
@@ -13,28 +13,29 @@ export class ActionExecutor {
         await this.executeOne(action);
         success++;
       } catch (err) {
-        console.error(`Action failed:`, action, err);
-        new Notice(`Failed: ${action.action} - ${err}`);
+        console.error("Action failed:", action, err);
         failed++;
       }
     }
 
     if (success > 0) {
-      new Notice(`Pip: ${success} action(s) completed`);
+      new Notice(`OpenClaw: ${success} action(s) completed`);
+    }
+    if (failed > 0) {
+      new Notice(`OpenClaw: ${failed} action(s) failed`);
     }
 
     return { success, failed };
   }
 
-  private async executeOne(action: PipAction): Promise<void> {
+  private async executeOne(action: OpenClawAction): Promise<void> {
     const { vault } = this.app;
 
     switch (action.action) {
       case "createFile": {
-        // Ensure parent folder exists
-        const folder = action.path.substring(0, action.path.lastIndexOf("/"));
-        if (folder && !vault.getAbstractFileByPath(folder)) {
-          await vault.createFolder(folder);
+        const exists = vault.getAbstractFileByPath(action.path);
+        if (exists) {
+          throw new Error(`File already exists: ${action.path}`);
         }
         await vault.create(action.path, action.content);
         break;
@@ -54,8 +55,8 @@ export class ActionExecutor {
         if (!(file instanceof TFile)) {
           throw new Error(`File not found: ${action.path}`);
         }
-        const existing = await vault.read(file);
-        await vault.modify(file, existing + action.content);
+        const current = await vault.read(file);
+        await vault.modify(file, current + "\n" + action.content);
         break;
       }
 
@@ -87,7 +88,7 @@ export class ActionExecutor {
       }
 
       default:
-        throw new Error(`Unknown action: ${(action as any).action}`);
+        throw new Error(`Unknown action: ${(action as OpenClawAction).action}`);
     }
   }
 }

@@ -1,8 +1,8 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
-import type PipbotPlugin from "../main";
+import type OpenClawPlugin from "../main";
 
-export class PipbotSettingTab extends PluginSettingTab {
-  constructor(app: App, private plugin: PipbotPlugin) {
+export class OpenClawSettingTab extends PluginSettingTab {
+  constructor(app: App, private plugin: OpenClawPlugin) {
     super(app, plugin);
   }
 
@@ -54,21 +54,21 @@ export class PipbotSettingTab extends PluginSettingTab {
 
     containerEl.createEl("h3", { text: "Connection Test" });
 
-    const testContainer = containerEl.createDiv({ cls: "pip-test-container" });
+    const testContainer = containerEl.createDiv({ cls: "openclaw-test-container" });
     const testBtn = testContainer.createEl("button", { text: "Test Connection" });
-    const testResult = testContainer.createEl("span", { cls: "pip-test-result" });
+    const testResult = testContainer.createEl("span", { cls: "openclaw-test-result" });
 
     testBtn.addEventListener("click", async () => {
       testResult.setText("Testing...");
       try {
         const response = await this.plugin.api.chat("Say 'Connection successful!' in 5 words or less", {});
         testResult.setText(`✓ ${response.text}`);
-        testResult.addClass("pip-test-success");
-        testResult.removeClass("pip-test-error");
+        testResult.addClass("openclaw-test-success");
+        testResult.removeClass("openclaw-test-error");
       } catch (err) {
         testResult.setText(`✗ ${err instanceof Error ? err.message : "Failed"}`);
-        testResult.addClass("pip-test-error");
-        testResult.removeClass("pip-test-success");
+        testResult.addClass("openclaw-test-error");
+        testResult.removeClass("openclaw-test-success");
       }
     });
   }

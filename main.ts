@@ -1,40 +1,40 @@
 import { Plugin, WorkspaceLeaf } from "obsidian";
-import { PipView, PIP_VIEW_TYPE } from "./src/PipView";
-import { PipbotAPI } from "./src/api";
+import { OpenClawView, OPENCLAW_VIEW_TYPE } from "./src/OpenClawView";
+import { OpenClawAPI } from "./src/api";
 import { ActionExecutor } from "./src/actions";
-import { PipbotSettingTab } from "./src/settings";
-import { PipbotSettings, DEFAULT_SETTINGS } from "./src/types";
+import { OpenClawSettingTab } from "./src/settings";
+import { OpenClawSettings, DEFAULT_SETTINGS } from "./src/types";
 
-export default class PipbotPlugin extends Plugin {
-  settings: PipbotSettings;
-  api: PipbotAPI;
+export default class OpenClawPlugin extends Plugin {
+  settings: OpenClawSettings;
+  api: OpenClawAPI;
   actionExecutor: ActionExecutor;
 
   async onload(): Promise<void> {
     await this.loadSettings();
 
-    this.api = new PipbotAPI(this.settings);
+    this.api = new OpenClawAPI(this.settings);
     this.actionExecutor = new ActionExecutor(this.app);
 
     // Register the chat view
-    this.registerView(PIP_VIEW_TYPE, (leaf) => new PipView(leaf, this));
+    this.registerView(OPENCLAW_VIEW_TYPE, (leaf) => new OpenClawView(leaf, this));
 
     // Add ribbon icon to open chat
-    this.addRibbonIcon("message-circle", "Open Pip Chat", () => {
+    this.addRibbonIcon("message-circle", "Open OpenClaw Chat", () => {
       this.activateView();
     });
 
     // Add command to open chat
     this.addCommand({
-      id: "open-pip-chat",
-      name: "Open Pip Chat",
+      id: "open-openclaw-chat",
+      name: "Open OpenClaw Chat",
       callback: () => this.activateView(),
     });
 
     // Add command to ask about current note
     this.addCommand({
-      id: "ask-pip-about-note",
-      name: "Ask Pip about current note",
+      id: "ask-openclaw-about-note",
+      name: "Ask OpenClaw about current note",
       callback: async () => {
         await this.activateView();
         // The view will be opened, user can then type their question
@@ -42,7 +42,7 @@ export default class PipbotPlugin extends Plugin {
     });
 
     // Settings tab
-    this.addSettingTab(new PipbotSettingTab(this.app, this));
+    this.addSettingTab(new OpenClawSettingTab(this.app, this));
 
     console.log("OpenClaw loaded 🐉");
   }
@@ -58,14 +58,14 @@ export default class PipbotPlugin extends Plugin {
   async saveSettings(): Promise<void> {
     await this.saveData(this.settings);
     // Recreate API with new settings
-    this.api = new PipbotAPI(this.settings);
+    this.api = new OpenClawAPI(this.settings);
   }
 
   async activateView(): Promise<void> {
     const { workspace } = this.app;
 
     let leaf: WorkspaceLeaf | null = null;
-    const leaves = workspace.getLeavesOfType(PIP_VIEW_TYPE);
+    const leaves = workspace.getLeavesOfType(OPENCLAW_VIEW_TYPE);
 
     if (leaves.length > 0) {
       // View already exists, focus it
@@ -74,7 +74,7 @@ export default class PipbotPlugin extends Plugin {
       // Create new view in right sidebar
       leaf = workspace.getRightLeaf(false);
       if (leaf) {
-        await leaf.setViewState({ type: PIP_VIEW_TYPE, active: true });
+        await leaf.setViewState({ type: OPENCLAW_VIEW_TYPE, active: true });
       }
     }
 

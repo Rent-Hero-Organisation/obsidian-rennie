@@ -1,5 +1,5 @@
-/* Pip Chat Container */
-.pip-chat-container {
+/* OpenClaw Chat Container */
+.openclaw-chat-container {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -7,7 +7,7 @@
 }
 
 /* Messages Area */
-.pip-messages {
+.openclaw-messages {
   flex: 1;
   overflow-y: auto;
   padding: 12px;
@@ -17,41 +17,41 @@
 }
 
 /* Individual Message */
-.pip-message {
+.openclaw-message {
   padding: 10px 14px;
   border-radius: 12px;
   max-width: 90%;
   word-wrap: break-word;
 }
 
-.pip-message.pip-user {
+.openclaw-message.openclaw-user {
   background: var(--interactive-accent);
   color: var(--text-on-accent);
   align-self: flex-end;
   border-bottom-right-radius: 4px;
 }
 
-.pip-message.pip-assistant {
+.openclaw-message.openclaw-assistant {
   background: var(--background-secondary);
   align-self: flex-start;
   border-bottom-left-radius: 4px;
 }
 
-.pip-message.pip-loading {
+.openclaw-message.openclaw-loading {
   background: var(--background-secondary);
   color: var(--text-muted);
   font-style: italic;
   align-self: flex-start;
 }
 
-.pip-message.pip-error {
+.openclaw-message.openclaw-error {
   background: var(--background-modifier-error);
   border: 1px solid var(--text-error);
   align-self: stretch;
   max-width: 100%;
 }
 
-.pip-error-text {
+.openclaw-error-text {
   display: block;
   padding: 8px;
   background: var(--background-primary);
@@ -63,7 +63,7 @@
   cursor: text;
 }
 
-.pip-copy-btn {
+.openclaw-copy-btn {
   margin-top: 8px;
   padding: 4px 10px;
   font-size: 12px;
@@ -74,23 +74,23 @@
   color: var(--text-muted);
 }
 
-.pip-copy-btn:hover {
+.openclaw-copy-btn:hover {
   background: var(--background-modifier-hover);
 }
 
-.pip-message-content {
+.openclaw-message-content {
   line-height: 1.5;
 }
 
-.pip-message-content p:first-child {
+.openclaw-message-content p:first-child {
   margin-top: 0;
 }
 
-.pip-message-content p:last-child {
+.openclaw-message-content p:last-child {
   margin-bottom: 0;
 }
 
-.pip-actions {
+.openclaw-actions {
   font-size: 0.85em;
   color: var(--text-muted);
   margin-top: 8px;
@@ -99,13 +99,13 @@
 }
 
 /* Input Area */
-.pip-input-container {
+.openclaw-input-container {
   padding: 12px;
   border-top: 1px solid var(--background-modifier-border);
   background: var(--background-primary);
 }
 
-.pip-input {
+.openclaw-input {
   width: 100%;
   min-height: 60px;
   padding: 10px;
@@ -118,23 +118,23 @@
   resize: vertical;
 }
 
-.pip-input:focus {
+.openclaw-input:focus {
   outline: none;
   border-color: var(--interactive-accent);
 }
 
-.pip-input::placeholder {
+.openclaw-input::placeholder {
   color: var(--text-muted);
 }
 
-.pip-button-row {
+.openclaw-button-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 8px;
 }
 
-.pip-toggle {
+.openclaw-toggle {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -143,11 +143,11 @@
   cursor: pointer;
 }
 
-.pip-toggle input {
+.openclaw-toggle input {
   cursor: pointer;
 }
 
-.pip-send-btn {
+.openclaw-send-btn {
   padding: 8px 16px;
   background: var(--interactive-accent);
   color: var(--text-on-accent);
@@ -157,26 +157,26 @@
   font-weight: 500;
 }
 
-.pip-send-btn:hover {
+.openclaw-send-btn:hover {
   background: var(--interactive-accent-hover);
 }
 
 /* Settings */
-.pip-test-container {
+.openclaw-test-container {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-top: 8px;
 }
 
-.pip-test-result {
+.openclaw-test-result {
   font-size: 13px;
 }
 
-.pip-test-success {
+.openclaw-test-success {
   color: var(--text-success);
 }
 
-.pip-test-error {
+.openclaw-test-error {
   color: var(--text-error);
 }

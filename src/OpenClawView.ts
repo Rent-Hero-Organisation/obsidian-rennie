@@ -1,25 +1,25 @@
 import { ItemView, WorkspaceLeaf, MarkdownRenderer, TFile } from "obsidian";
-import type PipbotPlugin from "../main";
+import type OpenClawPlugin from "../main";
 import { ChatMessage } from "./types";
 
-export const PIP_VIEW_TYPE = "pip-chat-view";
+export const OPENCLAW_VIEW_TYPE = "openclaw-chat-view";
 
-export class PipView extends ItemView {
+export class OpenClawView extends ItemView {
   private messages: ChatMessage[] = [];
   private inputEl: HTMLTextAreaElement;
   private messagesEl: HTMLElement;
   private isLoading = false;
 
-  constructor(leaf: WorkspaceLeaf, private plugin: PipbotPlugin) {
+  constructor(leaf: WorkspaceLeaf, private plugin: OpenClawPlugin) {
     super(leaf);
   }
 
   getViewType(): string {
-    return PIP_VIEW_TYPE;
+    return OPENCLAW_VIEW_TYPE;
   }
 
   getDisplayText(): string {
-    return "Pip";
+    return "OpenClaw";
   }
 
   getIcon(): string {
@@ -29,28 +29,28 @@ export class PipView extends ItemView {
   async onOpen(): Promise<void> {
     const container = this.containerEl.children[1];
     container.empty();
-    container.addClass("pip-chat-container");
+    container.addClass("openclaw-chat-container");
 
     // Messages area
-    this.messagesEl = container.createDiv({ cls: "pip-messages" });
+    this.messagesEl = container.createDiv({ cls: "openclaw-messages" });
 
     // Input area
-    const inputContainer = container.createDiv({ cls: "pip-input-container" });
+    const inputContainer = container.createDiv({ cls: "openclaw-input-container" });
     
     this.inputEl = inputContainer.createEl("textarea", {
-      cls: "pip-input",
-      attr: { placeholder: "Ask Pip anything...", rows: "2" },
+      cls: "openclaw-input",
+      attr: { placeholder: "Ask OpenClaw anything...", rows: "2" },
     });
 
-    const buttonRow = inputContainer.createDiv({ cls: "pip-button-row" });
+    const buttonRow = inputContainer.createDiv({ cls: "openclaw-button-row" });
     
-    const includeNoteToggle = buttonRow.createEl("label", { cls: "pip-toggle" });
+    const includeNoteToggle = buttonRow.createEl("label", { cls: "openclaw-toggle" });
     const checkbox = includeNoteToggle.createEl("input", { type: "checkbox" });
     checkbox.checked = true;
     includeNoteToggle.appendText(" Include current note");
     
     const sendBtn = buttonRow.createEl("button", {
-      cls: "pip-send-btn",
+      cls: "openclaw-send-btn",
       text: "Send",
     });
 
@@ -66,7 +66,7 @@ export class PipView extends ItemView {
     // Welcome message
     this.addMessage({
       role: "assistant",
-      content: "Hey! 🐉 I'm Pip. Ask me anything, or ask me to create/edit notes.",
+      content: "Hey! 🐉 I'm OpenClaw. Ask me anything, or ask me to create/edit notes.",
       timestamp: Date.now(),
     });
   }
@@ -100,8 +100,8 @@ export class PipView extends ItemView {
     }
 
     // Show loading indicator
-    const loadingEl = this.messagesEl.createDiv({ cls: "pip-message pip-loading" });
-    loadingEl.setText("Pip is thinking...");
+    const loadingEl = this.messagesEl.createDiv({ cls: "openclaw-message openclaw-loading" });
+    loadingEl.setText("OpenClaw is thinking...");
 
     try {
       const response = await this.plugin.api.chat(message, context);
@@ -138,10 +138,10 @@ export class PipView extends ItemView {
     this.messages.push(msg);
 
     const messageEl = this.messagesEl.createDiv({
-      cls: `pip-message pip-${msg.role}`,
+      cls: `openclaw-message openclaw-${msg.role}`,
     });
 
-    const contentEl = messageEl.createDiv({ cls: "pip-message-content" });
+    const contentEl = messageEl.createDiv({ cls: "openclaw-message-content" });
     
     // Render markdown for assistant messages
     if (msg.role === "assistant") {
@@ -154,11 +154,11 @@ export class PipView extends ItemView {
       );
     } else if (msg.role === "error") {
       // Error messages are selectable/copyable
-      const errorText = contentEl.createEl("code", { cls: "pip-error-text" });
+      const errorText = contentEl.createEl("code", { cls: "openclaw-error-text" });
       errorText.setText(msg.content);
       
       const copyBtn = contentEl.createEl("button", { 
-        cls: "pip-copy-btn",
+        cls: "openclaw-copy-btn",
         text: "Copy"
       });
       copyBtn.addEventListener("click", async () => {
@@ -172,7 +172,7 @@ export class PipView extends ItemView {
 
     // Show actions if any
     if (msg.actions && msg.actions.length > 0 && this.plugin.settings.showActionsInChat) {
-      const actionsEl = messageEl.createDiv({ cls: "pip-actions" });
+      const actionsEl = messageEl.createDiv({ cls: "openclaw-actions" });
       actionsEl.setText(`📁 ${msg.actions.length} file action(s)`);
     }
 

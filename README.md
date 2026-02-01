@@ -1,13 +1,13 @@
 # Obsidian OpenClaw
 
-Chat with Pip (OpenClaw) directly from Obsidian. Create, edit, and manage notes through conversation.
+Chat with OpenClaw directly from Obsidian. Create, edit, and manage notes through conversation.
 
 ## Features
 
-- **Chat sidebar** - Talk to Pip from the right sidebar
+- **Chat sidebar** - Talk to OpenClaw from the right sidebar
 - **Context-aware** - Optionally include the current note in your conversation
-- **File operations** - Pip can create, update, append to, delete, and rename files
-- **Markdown rendering** - Pip's responses render as proper markdown
+- **File operations** - OpenClaw can create, update, append to, delete, and rename files
+- **Markdown rendering** - Responses render as proper markdown
 
 ## Installation
 
@@ -37,19 +37,19 @@ This plugin is installed using [BRAT](https://github.com/TfTHacker/obsidian42-br
 
 ## Opening the Chat Sidebar
 
-There are several ways to open the Pip chat panel:
+There are several ways to open the OpenClaw chat panel:
 
 1. **Ribbon icon** - Click the chat bubble icon (💬) in the left ribbon
-2. **Command palette** - Press `Cmd/Ctrl+P` and search for "Open Pip Chat"
-3. **Hotkey** - Assign a custom hotkey in Settings → Hotkeys, search for "Pip"
+2. **Command palette** - Press `Cmd/Ctrl+P` and search for "Open OpenClaw Chat"
+3. **Hotkey** - Assign a custom hotkey in Settings → Hotkeys, search for "OpenClaw"
 
 The chat panel opens in the right sidebar. You can drag it to a different position if preferred.
 
 ## Usage
 
-1. Open the Pip chat sidebar (see above)
+1. Open the OpenClaw chat sidebar (see above)
 2. Type your message and press `Cmd/Ctrl+Enter` or click **Send**
-3. Toggle "Include current note" to give Pip context about what you're working on
+3. Toggle "Include current note" to give OpenClaw context about what you're working on
 
 ### Example prompts
 
@@ -60,7 +60,7 @@ The chat panel opens in the right sidebar. You can drag it to a different positi
 
 ## File Actions
 
-When you ask Pip to work with files, it returns structured actions that the plugin executes:
+When you ask OpenClaw to work with files, it returns structured actions that the plugin executes:
 
 | Action | Description |
 |--------|-------------|

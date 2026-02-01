@@ -1,17 +1,17 @@
 import { requestUrl } from "obsidian";
-import { PipbotSettings, ChatResponse, PipAction } from "./types";
+import { OpenClawSettings, ChatResponse, OpenClawAction } from "./types";
 
-export class PipbotAPI {
-  constructor(private settings: PipbotSettings) {}
+export class OpenClawAPI {
+  constructor(private settings: OpenClawSettings) {}
 
   async chat(
     message: string,
     context?: { currentFile?: string; currentContent?: string }
   ): Promise<ChatResponse> {
     const systemParts: string[] = [
-      "You are Pip, a helpful assistant in Obsidian.",
+      "You are OpenClaw, a helpful assistant in Obsidian.",
       "When asked to create or modify files, include a JSON action block.",
-      "Format: ```json:pip-actions\\n[{\"action\": \"...\", ...}]\\n```",
+      "Format: ```json:openclaw-actions\\n[{\"action\": \"...\", ...}]\\n```",
       "Supported actions: createFile, updateFile, appendToFile, deleteFile, renameFile, openFile",
     ];
 
@@ -61,18 +61,18 @@ export class PipbotAPI {
     };
   }
 
-  private parseActions(text: string): PipAction[] {
-    const match = text.match(/```json:pip-actions\n([\s\S]*?)```/);
+  private parseActions(text: string): OpenClawAction[] {
+    const match = text.match(/```json:openclaw-actions\n([\s\S]*?)```/);
     if (!match) return [];
     try {
       return JSON.parse(match[1]);
     } catch {
-      console.error("Failed to parse pip-actions:", match[1]);
+      console.error("Failed to parse openclaw-actions:", match[1]);
       return [];
     }
   }
 
   private stripActionBlocks(text: string): string {
-    return text.replace(/```json:pip-actions\n[\s\S]*?```\n?/g, "").trim();
+    return text.replace(/```json:openclaw-actions\n[\s\S]*?```\n?/g, "").trim();
   }
 }
