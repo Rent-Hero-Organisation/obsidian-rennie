@@ -1,3 +1,4 @@
+import { requestUrl } from "obsidian";
 import { PipbotSettings, ChatResponse, PipAction } from "./types";
 
 export class PipbotAPI {
@@ -21,29 +22,28 @@ export class PipbotAPI {
       }
     }
 
-    const response = await fetch(
-      `${this.settings.gatewayUrl}/v1/chat/completions`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${this.settings.gatewayToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "clawdbot:main",
-          messages: [
-            { role: "system", content: systemParts.join("\n") },
-            { role: "user", content: message },
-          ],
-        }),
-      }
-    );
+    // Use Obsidian's requestUrl to bypass CORS restrictions
+    const response = await requestUrl({
+      url: `${this.settings.gatewayUrl}/v1/chat/completions`,
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.settings.gatewayToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "clawdbot:main",
+        messages: [
+          { role: "system", content: systemParts.join("\n") },
+          { role: "user", content: message },
+        ],
+      }),
+    });
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status} ${response.statusText}`);
+    if (response.status >= 400) {
+      throw new Error(`API error: ${response.status}`);
     }
 
-    const data = await response.json();
+    const data = response.json;
     const text = data.choices?.[0]?.message?.content ?? "";
     const actions = this.parseActions(text);
 
