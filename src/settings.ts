@@ -14,13 +14,14 @@ export class PipbotSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Gateway URL")
-      .setDesc("URL of your OpenClaw gateway (default: http://127.0.0.1:18789)")
+      .setDesc("URL of your OpenClaw gateway. Do not include a trailing slash.")
       .addText((text) =>
         text
           .setPlaceholder("http://127.0.0.1:18789")
           .setValue(this.plugin.settings.gatewayUrl)
           .onChange(async (value) => {
-            this.plugin.settings.gatewayUrl = value;
+            // Strip trailing slashes to prevent 405 errors
+            this.plugin.settings.gatewayUrl = value.replace(/\/+$/, "");
             await this.plugin.saveSettings();
           })
       );
