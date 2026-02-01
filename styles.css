@@ -180,3 +180,39 @@
 .openclaw-test-error {
   color: var(--text-error);
 }
+
+/* Confirmation Modal */
+.openclaw-confirm-details {
+  background: var(--background-secondary);
+  padding: 12px;
+  border-radius: 6px;
+  margin: 12px 0;
+}
+
+.openclaw-confirm-details strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.openclaw-confirm-details p {
+  margin: 0;
+  font-family: var(--font-monospace);
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.openclaw-confirm-warning {
+  color: var(--text-error);
+  background: var(--background-modifier-error);
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin: 12px 0;
+  font-weight: 500;
+}
+
+.openclaw-confirm-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
