@@ -94,14 +94,67 @@ Your gateway token is stored securely using a priority-based system:
 
 The settings page shows your current storage method with a security indicator (🔒 or ⚠️).
 
-**Using an environment variable (recommended for maximum security):**
+**Using an environment variable:**
+
+For most users, the OS Keychain method works automatically. Use the environment variable as a fallback if keychain storage isn't working on your system.
+
+<details>
+<summary><strong>Linux / Windows (WSL)</strong></summary>
 
 ```bash
 # Add to your shell profile (~/.zshrc, ~/.bashrc, etc.)
 export OPENCLAW_TOKEN="your-token-here"
 ```
 
-Then restart Obsidian. The token field will show "Using Environment Variable".
+Then restart Obsidian.
+
+</details>
+
+<details>
+<summary><strong>macOS</strong></summary>
+
+macOS GUI apps don't inherit shell environment variables. Use `launchctl` instead:
+
+**Temporary (until reboot):**
+```bash
+launchctl setenv OPENCLAW_TOKEN "your-token-here"
+# Then restart Obsidian
+```
+
+**Persistent (survives reboot):**
+
+Create a Launch Agent:
+
+```bash
+cat > ~/Library/LaunchAgents/com.openclaw.env.plist << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.openclaw.env</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>launchctl</string>
+        <string>setenv</string>
+        <string>OPENCLAW_TOKEN</string>
+        <string>YOUR_TOKEN_HERE</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
+EOF
+
+# Load it immediately
+launchctl load ~/Library/LaunchAgents/com.openclaw.env.plist
+```
+
+Then restart Obsidian.
+
+</details>
+
+When configured, the token field will show "Using Environment Variable".
 
 ### Note Content
 
