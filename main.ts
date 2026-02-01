@@ -68,7 +68,15 @@ export default class OpenClawPlugin extends Plugin {
   }
 
   async loadSettings(): Promise<void> {
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    const data = await this.loadData() || {};
+    
+    // Migrate old gatewayToken field to new structure
+    if (data.gatewayToken && !data.gatewayTokenPlaintext && !data.gatewayTokenEncrypted) {
+      data.gatewayTokenPlaintext = data.gatewayToken;
+      delete data.gatewayToken;
+    }
+    
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, data);
   }
 
   async saveSettings(): Promise<void> {
