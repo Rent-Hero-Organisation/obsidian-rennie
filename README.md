@@ -185,7 +185,7 @@ Sync notes between your Obsidian vault and the OpenClaw gateway. This enables tw
 
 ### Prerequisites
 
-The sync feature requires the `obsidian-sync` skill running on your gateway.
+The sync feature requires the [`obsidian-sync`](https://www.clawhub.ai/AndyBold/obsidian-sync) skill running on your gateway.
 
 **Install via ClawdHub:**
 ```bash
