@@ -641,7 +641,8 @@ var RENTHERO_SYNC_PATHS = [
   { remotePath: "notes", localPath: "RentHero/Notes", enabled: true },
   { remotePath: "trello", localPath: "RentHero/Trello", enabled: true },
   { remotePath: "templates", localPath: "RentHero/Templates", enabled: true },
-  { remotePath: "inbox", localPath: "RentHero/Inbox", enabled: true }
+  { remotePath: "inbox", localPath: "RentHero/Inbox", enabled: true },
+  { remotePath: "private", localPath: "RentHero/Private", enabled: true }
 ];
 var DEFAULT_SETTINGS = {
   gatewayUrl: "https://rennie.renthero.com/api",

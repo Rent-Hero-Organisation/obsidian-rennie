@@ -14,6 +14,7 @@ export const RENTHERO_SYNC_PATHS: SyncPathConfig[] = [
   { remotePath: "trello",    localPath: "RentHero/Trello",     enabled: true },
   { remotePath: "templates", localPath: "RentHero/Templates",  enabled: true },
   { remotePath: "inbox",     localPath: "RentHero/Inbox",      enabled: true },
+  { remotePath: "private",   localPath: "RentHero/Private",    enabled: true },
 ];
 
 export interface RennieSettings {
