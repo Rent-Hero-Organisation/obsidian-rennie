@@ -631,12 +631,9 @@ var RENTHERO_SYNC_PATHS = [
   { remotePath: "decisions", localPath: "RentHero/Decisions", enabled: true },
   { remotePath: "projects", localPath: "RentHero/Projects", enabled: true },
   { remotePath: "notes", localPath: "RentHero/Notes", enabled: true },
-  { remotePath: "people", localPath: "RentHero/People", enabled: true },
-  { remotePath: "lessons", localPath: "RentHero/Lessons", enabled: true },
+  { remotePath: "trello", localPath: "RentHero/Trello", enabled: true },
   { remotePath: "templates", localPath: "RentHero/Templates", enabled: true },
-  { remotePath: "inbox", localPath: "RentHero/Inbox", enabled: true },
-  { remotePath: "memory", localPath: "RentHero/Memory", enabled: true },
-  { remotePath: "handoffs", localPath: "RentHero/Handoffs", enabled: true }
+  { remotePath: "inbox", localPath: "RentHero/Inbox", enabled: true }
 ];
 var DEFAULT_SETTINGS = {
   gatewayUrl: "https://rennie.renthero.com/api",
