@@ -1,0 +1,22 @@
+[Unit]
+Description=Rennie Auth Service (GitHub OAuth + JWT validation)
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/rennie-auth
+ExecStart=/usr/bin/node /home/ubuntu/rennie-auth/server.js
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/ubuntu/rennie-auth
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
