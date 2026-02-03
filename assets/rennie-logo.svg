@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ecca3"/>
+      <stop offset="100%" style="stop-color:#45b7d1"/>
+    </linearGradient>
+    <linearGradient id="roofGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3dbb94"/>
+      <stop offset="100%" style="stop-color:#38a3bd"/>
+    </linearGradient>
+    <linearGradient id="screenGlow" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ecca3;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#4ecca3;stop-opacity:0"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="248" fill="#0a0a1a"/>
+  <circle cx="256" cy="256" r="248" fill="none" stroke="#1e1e3a" stroke-width="4"/>
+  
+  <!-- Terminal scanlines (subtle) -->
+  <g opacity="0.03">
+    <line x1="40" y1="80" x2="472" y2="80" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="100" x2="472" y2="100" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="120" x2="472" y2="120" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="140" x2="472" y2="140" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="160" x2="472" y2="160" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="180" x2="472" y2="180" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="200" x2="472" y2="200" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="220" x2="472" y2="220" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="240" x2="472" y2="240" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="260" x2="472" y2="260" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="280" x2="472" y2="280" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="300" x2="472" y2="300" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="320" x2="472" y2="320" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="340" x2="472" y2="340" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="360" x2="472" y2="360" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="380" x2="472" y2="380" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="400" x2="472" y2="400" stroke="#4ecca3" stroke-width="1"/>
+    <line x1="40" y1="420" x2="472" y2="420" stroke="#4ecca3" stroke-width="1"/>
+  </g>
+  
+  <!-- Rennie's body (house shape) -->
+  <!-- Main house body -->
+  <rect x="140" y="230" width="232" height="180" rx="12" fill="url(#bodyGrad)" opacity="0.9"/>
+  
+  <!-- Roof -->
+  <polygon points="256,120 108,240 404,240" fill="url(#roofGrad)" opacity="0.95"/>
+  <!-- Roof outline glow -->
+  <polygon points="256,120 108,240 404,240" fill="none" stroke="#4ecca3" stroke-width="2" opacity="0.4"/>
+  
+  <!-- Chimney -->
+  <rect x="320" y="145" width="32" height="60" rx="4" fill="#3dbb94"/>
+  <!-- Chimney smoke (data packets!) -->
+  <g opacity="0.5">
+    <rect x="328" y="120" width="6" height="6" rx="1" fill="#4ecca3" opacity="0.8"/>
+    <rect x="340" y="105" width="5" height="5" rx="1" fill="#45b7d1" opacity="0.6"/>
+    <rect x="330" y="88" width="4" height="4" rx="1" fill="#4ecca3" opacity="0.4"/>
+    <rect x="342" y="74" width="3" height="3" rx="1" fill="#45b7d1" opacity="0.2"/>
+  </g>
+  
+  <!-- EYES - big, expressive, screen-like -->
+  <!-- Left eye (screen) -->
+  <rect x="168" y="260" width="72" height="56" rx="8" fill="#0a0a1a"/>
+  <rect x="172" y="264" width="64" height="48" rx="6" fill="#0d1117"/>
+  <!-- Left eye pupil/cursor -->
+  <rect x="188" y="276" width="20" height="24" rx="4" fill="#4ecca3">
+    <animate attributeName="x" values="188;196;188" dur="3s" repeatCount="indefinite"/>
+  </rect>
+  <!-- Left eye screen reflection -->
+  <rect x="174" y="266" width="24" height="4" rx="2" fill="#4ecca3" opacity="0.15"/>
+  
+  <!-- Right eye (screen) -->
+  <rect x="272" y="260" width="72" height="56" rx="8" fill="#0a0a1a"/>
+  <rect x="276" y="264" width="64" height="48" rx="6" fill="#0d1117"/>
+  <!-- Right eye pupil/cursor -->
+  <rect x="296" y="276" width="20" height="24" rx="4" fill="#4ecca3">
+    <animate attributeName="x" values="296;304;296" dur="3s" repeatCount="indefinite"/>
+  </rect>
+  <!-- Right eye screen reflection -->
+  <rect x="278" y="266" width="24" height="4" rx="2" fill="#4ecca3" opacity="0.15"/>
+  
+  <!-- Mouth - happy terminal prompt -->
+  <g transform="translate(190, 340)">
+    <!-- Terminal prompt mouth -->
+    <rect x="0" y="0" width="132" height="36" rx="6" fill="#0a0a1a"/>
+    <rect x="4" y="4" width="124" height="28" rx="4" fill="#0d1117"/>
+    <!-- > prompt -->
+    <text x="12" y="24" font-family="monospace" font-size="18" fill="#4ecca3" font-weight="bold">&gt;_</text>
+    <!-- Blinking cursor -->
+    <rect x="46" y="10" width="8" height="16" fill="#4ecca3" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0;0.8" dur="1s" repeatCount="indefinite"/>
+    </rect>
+    <!-- Happy text -->
+    <text x="58" y="24" font-family="monospace" font-size="14" fill="#45b7d1" opacity="0.7">hello!</text>
+  </g>
+  
+  <!-- Door (heart/home) -->
+  <rect x="234" y="350" width="44" height="58" rx="4" fill="#0a0a1a" opacity="0.5"/>
+  
+  <!-- Little feet/base -->
+  <rect x="155" y="408" width="40" height="16" rx="8" fill="url(#bodyGrad)" opacity="0.7"/>
+  <rect x="317" y="408" width="40" height="16" rx="8" fill="url(#bodyGrad)" opacity="0.7"/>
+  
+  <!-- Antenna -->
+  <line x1="256" y1="120" x2="256" y2="85" stroke="#4ecca3" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="256" cy="78" r="8" fill="#45b7d1" opacity="0.9">
+    <animate attributeName="r" values="8;10;8" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.9;0.5;0.9" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Antenna signal waves -->
+  <circle cx="256" cy="78" r="16" fill="none" stroke="#4ecca3" stroke-width="1.5" opacity="0.3">
+    <animate attributeName="r" values="16;28;16" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0;0.3" dur="2s" repeatCount="indefinite"/>
+  </circle>
+</svg>
