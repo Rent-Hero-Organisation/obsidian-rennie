@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="512" height="512">
+  <!-- 5E: Cheerful warm yellow -->
+  <rect x="24" y="40" width="72" height="58" rx="8" fill="#F0C060"/>
+  <polygon points="60,10 18,44 102,44" fill="#D4A040"/>
+  <rect x="80" y="16" width="8" height="20" rx="2" fill="#F0C060"/>
+  <circle cx="84" cy="10" r="4" fill="#F0C060" opacity="0.5"/>
+  <circle cx="90" cy="6" r="3" fill="#F0C060" opacity="0.3"/>
+  <circle cx="46" cy="62" r="8" fill="#1A1A1A"/>
+  <circle cx="74" cy="62" r="8" fill="#1A1A1A"/>
+  <circle cx="43" cy="59" r="3" fill="#FFFFFF" opacity="0.85"/>
+  <circle cx="71" cy="59" r="3" fill="#FFFFFF" opacity="0.85"/>
+  <!-- Big happy grin -->
+  <path d="M48 76 Q60 88 72 76" fill="none" stroke="#B88830" stroke-width="2.5" stroke-linecap="round"/>
+  <rect x="53" y="84" width="14" height="14" rx="7" fill="#D4A040" opacity="0.4"/>
+  <ellipse cx="40" cy="100" rx="10" ry="6" fill="#F0C060"/>
+  <ellipse cx="80" cy="100" rx="10" ry="6" fill="#F0C060"/>
+</svg>
