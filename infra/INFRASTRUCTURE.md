@@ -112,10 +112,10 @@ If moving to a new server, update these:
 ### Secrets to Migrate
 | Secret | Location | Notes |
 |--------|----------|-------|
-| JWT signing secret | `/home/ubuntu/rennie-auth/.jwt-secret` | If lost, all issued tokens become invalid |
-| Gateway token | In `nginx-rennie.conf` + `server.js` | Must match OpenClaw config |
-| GitHub OAuth Client ID | In `server.js` | From GitHub Org → Developer Settings |
-| GitHub OAuth Secret | In `server.js` | Same |
+| JWT signing secret | `/home/ubuntu/rennie-auth/.jwt-secret` | Auto-generated; if lost, all issued tokens become invalid |
+| Gateway token | `/etc/nginx/rennie-gateway-token.conf` | Must match OpenClaw config |
+| GitHub OAuth Client ID | `config.json` | From GitHub Org → Developer Settings |
+| GitHub OAuth Secret | `config.json` | Same — never commit this |
 
 ### GitHub OAuth App
 - [ ] Update callback URL if domain changes: `Settings → Developer settings → OAuth Apps → Rennie`
