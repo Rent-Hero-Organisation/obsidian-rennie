@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="512" height="512">
+  <!-- Option 5: Simple rounded house shape, standing upright -->
+  <!-- Most house-like but still character-ish -->
+  
+  <!-- Body -->
+  <rect x="24" y="40" width="72" height="58" rx="8" fill="#D4764E"/>
+  
+  <!-- Roof -->
+  <polygon points="60,10 18,44 102,44" fill="#B85E3A"/>
+  
+  <!-- Chimney -->
+  <rect x="80" y="16" width="8" height="20" rx="2" fill="#D4764E"/>
+  <!-- Smoke puff -->
+  <circle cx="84" cy="10" r="4" fill="#D4764E" opacity="0.5"/>
+  <circle cx="90" cy="6" r="3" fill="#D4764E" opacity="0.3"/>
+  
+  <!-- Eyes - big and cute -->
+  <circle cx="46" cy="62" r="8" fill="#1A1A1A"/>
+  <circle cx="74" cy="62" r="8" fill="#1A1A1A"/>
+  
+  <!-- Eye shine -->
+  <circle cx="43" cy="59" r="3" fill="#FFFFFF" opacity="0.85"/>
+  <circle cx="71" cy="59" r="3" fill="#FFFFFF" opacity="0.85"/>
+  
+  <!-- Tiny smile -->
+  <path d="M52 78 Q60 84 68 78" fill="none" stroke="#B85E3A" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Door (on belly, cute) -->
+  <rect x="53" y="82" width="14" height="16" rx="7" fill="#B85E3A" opacity="0.4"/>
+  
+  <!-- Feet -->
+  <ellipse cx="40" cy="100" rx="10" ry="6" fill="#D4764E"/>
+  <ellipse cx="80" cy="100" rx="10" ry="6" fill="#D4764E"/>
+</svg>
