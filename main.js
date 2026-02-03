@@ -619,17 +619,17 @@ var RENTHERO_SYNC_PATHS = [
   { remotePath: "handoffs", localPath: "RentHero/Handoffs", enabled: true }
 ];
 var DEFAULT_SETTINGS = {
-  gatewayUrl: "http://127.0.0.1:18789",
+  gatewayUrl: "https://rennie.renthero.com/api",
   gatewayTokenEncrypted: null,
   gatewayTokenPlaintext: "",
   showActionsInChat: false,
   auditLogEnabled: false,
   auditLogPath: "RentHero/audit-log.md",
   // Sync defaults
-  syncEnabled: false,
-  syncServerUrl: "http://127.0.0.1:18790",
+  syncEnabled: true,
+  syncServerUrl: "https://rennie.renthero.com",
   syncPaths: [...RENTHERO_SYNC_PATHS],
-  syncInterval: 0,
+  syncInterval: 15,
   syncConflictBehavior: "ask"
 };
 
@@ -642,6 +642,39 @@ var RennieSettingTab = class extends import_obsidian4.PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
+    containerEl.createEl("h2", { text: "\u{1F3E0} Rennie Connection" });
+    const token = secureTokenStorage.getToken(
+      this.plugin.settings.gatewayTokenEncrypted,
+      this.plugin.settings.gatewayTokenPlaintext
+    );
+    if (token) {
+      const statusDiv = containerEl.createDiv({ cls: "rennie-connected" });
+      statusDiv.innerHTML = `<div style="padding: 12px; background: #1a3a2a; border-radius: 8px; border: 1px solid #2d5a3d; margin-bottom: 16px;">
+        <span style="color: #4ecca3; font-weight: bold;">\u2705 Connected to Rennie</span>
+        <p style="color: #a0a0a0; margin: 4px 0 0; font-size: 12px;">Token stored securely. Chat and sync are ready.</p>
+      </div>`;
+      new import_obsidian4.Setting(containerEl).setName("Logout").setDesc("Remove stored credentials").addButton(
+        (btn) => btn.setButtonText("Logout").setWarning().onClick(async () => {
+          this.plugin.settings.gatewayTokenEncrypted = null;
+          this.plugin.settings.gatewayTokenPlaintext = "";
+          await this.plugin.saveSettings();
+          this.display();
+        })
+      );
+    } else {
+      const loginDiv = containerEl.createDiv({ cls: "rennie-login" });
+      loginDiv.innerHTML = `<div style="padding: 20px; background: #1a1a2e; border-radius: 12px; border: 1px solid #2d2d4e; margin-bottom: 16px; text-align: center;">
+        <div style="font-size: 36px; margin-bottom: 8px;">\u{1F3E0}</div>
+        <h3 style="margin: 0 0 4px; color: #e0e0e0;">Welcome to Rennie</h3>
+        <p style="color: #a0a0a0; margin: 0 0 16px; font-size: 13px;">Sign in with your GitHub account to connect to RentHero.</p>
+      </div>`;
+      new import_obsidian4.Setting(containerEl).setName("Login with GitHub").setDesc("Authenticates via your organization's GitHub account").addButton(
+        (btn) => btn.setButtonText("\u{1F511} Login with GitHub").setCta().onClick(() => {
+          const baseUrl = this.plugin.settings.gatewayUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
+          window.open(`${baseUrl}/auth/login`);
+        })
+      );
+    }
     containerEl.createEl("h2", { text: "Chat Settings" });
     new import_obsidian4.Setting(containerEl).setName("Gateway URL").setDesc("URL of your RentHero gateway. Do not include a trailing slash.").addText(
       (text) => text.setPlaceholder("http://127.0.0.1:18789").setValue(this.plugin.settings.gatewayUrl).onChange(async (value) => {
@@ -1267,6 +1300,23 @@ var RenniePlugin = class extends import_obsidian7.Plugin {
       id: "sync-now",
       name: "Sync Now",
       callback: () => this.runSync()
+    });
+    this.registerObsidianProtocolHandler("rennie-auth", async (params) => {
+      if (params.token) {
+        const { encrypted, plaintext } = secureTokenStorage.setToken(params.token);
+        this.settings.gatewayTokenEncrypted = encrypted;
+        this.settings.gatewayTokenPlaintext = plaintext;
+        await this.saveSettings();
+        new import_obsidian7.Notice(`\u{1F3E0} Welcome, ${params.user || "team member"}! Rennie is connected.`);
+      }
+    });
+    this.addCommand({
+      id: "login-github",
+      name: "Login with GitHub",
+      callback: () => {
+        const baseUrl = this.settings.gatewayUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
+        window.open(`${baseUrl}/auth/login`);
+      }
     });
     this.addSettingTab(new RennieSettingTab(this.app, this));
     if (this.settings.syncEnabled && this.settings.syncInterval > 0) {

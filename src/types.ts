@@ -36,17 +36,17 @@ export interface RennieSettings {
 }
 
 export const DEFAULT_SETTINGS: RennieSettings = {
-  gatewayUrl: "http://127.0.0.1:18789",
+  gatewayUrl: "https://rennie.renthero.com/api",
   gatewayTokenEncrypted: null,
   gatewayTokenPlaintext: "",
   showActionsInChat: false,
   auditLogEnabled: false,
   auditLogPath: "RentHero/audit-log.md",
   // Sync defaults
-  syncEnabled: false,
-  syncServerUrl: "http://127.0.0.1:18790",
+  syncEnabled: true,
+  syncServerUrl: "https://rennie.renthero.com",
   syncPaths: [...RENTHERO_SYNC_PATHS],
-  syncInterval: 0,
+  syncInterval: 15,
   syncConflictBehavior: "ask",
 };
 

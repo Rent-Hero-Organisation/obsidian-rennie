@@ -1,7 +1,7 @@
 {
   "id": "obsidian-renthero-sync",
   "name": "RentHero Sync",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "minAppVersion": "1.0.0",
   "description": "Team vault sync & AI chat for RentHero. Chat with Thad, sync research docs, decisions, and project files bidirectionally.",
   "author": "RentHero (forked from Andy Bold's obsidian-openclaw)",

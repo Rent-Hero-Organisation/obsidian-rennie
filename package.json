@@ -1,6 +1,6 @@
 {
   "name": "obsidian-renthero-sync",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Team vault sync & AI chat for RentHero",
   "main": "main.js",
   "scripts": {

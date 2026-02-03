@@ -12,6 +12,51 @@ export class RennieSettingTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
 
+    // ===== CONNECTION STATUS =====
+    containerEl.createEl("h2", { text: "🏠 Rennie Connection" });
+
+    const token = secureTokenStorage.getToken(
+      this.plugin.settings.gatewayTokenEncrypted,
+      this.plugin.settings.gatewayTokenPlaintext
+    );
+
+    if (token) {
+      const statusDiv = containerEl.createDiv({ cls: "rennie-connected" });
+      statusDiv.innerHTML = `<div style="padding: 12px; background: #1a3a2a; border-radius: 8px; border: 1px solid #2d5a3d; margin-bottom: 16px;">
+        <span style="color: #4ecca3; font-weight: bold;">✅ Connected to Rennie</span>
+        <p style="color: #a0a0a0; margin: 4px 0 0; font-size: 12px;">Token stored securely. Chat and sync are ready.</p>
+      </div>`;
+
+      new Setting(containerEl)
+        .setName("Logout")
+        .setDesc("Remove stored credentials")
+        .addButton((btn) =>
+          btn.setButtonText("Logout").setWarning().onClick(async () => {
+            this.plugin.settings.gatewayTokenEncrypted = null;
+            this.plugin.settings.gatewayTokenPlaintext = "";
+            await this.plugin.saveSettings();
+            this.display(); // Refresh
+          })
+        );
+    } else {
+      const loginDiv = containerEl.createDiv({ cls: "rennie-login" });
+      loginDiv.innerHTML = `<div style="padding: 20px; background: #1a1a2e; border-radius: 12px; border: 1px solid #2d2d4e; margin-bottom: 16px; text-align: center;">
+        <div style="font-size: 36px; margin-bottom: 8px;">🏠</div>
+        <h3 style="margin: 0 0 4px; color: #e0e0e0;">Welcome to Rennie</h3>
+        <p style="color: #a0a0a0; margin: 0 0 16px; font-size: 13px;">Sign in with your GitHub account to connect to RentHero.</p>
+      </div>`;
+
+      new Setting(containerEl)
+        .setName("Login with GitHub")
+        .setDesc("Authenticates via your organization's GitHub account")
+        .addButton((btn) =>
+          btn.setButtonText("🔑 Login with GitHub").setCta().onClick(() => {
+            const baseUrl = this.plugin.settings.gatewayUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
+            window.open(`${baseUrl}/auth/login`);
+          })
+        );
+    }
+
     // ===== CHAT SETTINGS =====
     containerEl.createEl("h2", { text: "Chat Settings" });
 

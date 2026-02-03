@@ -1,4 +1,4 @@
-import { Plugin, WorkspaceLeaf } from "obsidian";
+import { Plugin, WorkspaceLeaf, Notice } from "obsidian";
 import { RennieView, RENNIE_VIEW_TYPE } from "./src/RennieView";
 import { RennieAPI } from "./src/api";
 import { ActionExecutor } from "./src/actions";
@@ -6,6 +6,7 @@ import { RennieSettingTab } from "./src/settings";
 import { RennieSettings, DEFAULT_SETTINGS } from "./src/types";
 import { SyncService } from "./src/syncService";
 import { ConflictModal } from "./src/conflictModal";
+import { secureTokenStorage } from "./src/secureStorage";
 
 export default class RenniePlugin extends Plugin {
   settings: RennieSettings;
@@ -49,6 +50,28 @@ export default class RenniePlugin extends Plugin {
       id: "sync-now",
       name: "Sync Now",
       callback: () => this.runSync(),
+    });
+
+    // Handle OAuth callback protocol
+    this.registerObsidianProtocolHandler("rennie-auth", async (params) => {
+      if (params.token) {
+        // Store token
+        const { encrypted, plaintext } = secureTokenStorage.setToken(params.token);
+        this.settings.gatewayTokenEncrypted = encrypted;
+        this.settings.gatewayTokenPlaintext = plaintext;
+        await this.saveSettings();
+        new Notice(`🏠 Welcome, ${params.user || 'team member'}! Rennie is connected.`);
+      }
+    });
+
+    // Login command
+    this.addCommand({
+      id: "login-github",
+      name: "Login with GitHub",
+      callback: () => {
+        const baseUrl = this.settings.gatewayUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
+        window.open(`${baseUrl}/auth/login`);
+      },
     });
 
     // Settings tab
