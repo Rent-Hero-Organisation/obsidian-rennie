@@ -1,44 +1,44 @@
 import { Plugin, WorkspaceLeaf } from "obsidian";
-import { OpenClawView, OPENCLAW_VIEW_TYPE } from "./src/OpenClawView";
-import { OpenClawAPI } from "./src/api";
+import { RennieView, RENNIE_VIEW_TYPE } from "./src/RennieView";
+import { RennieAPI } from "./src/api";
 import { ActionExecutor } from "./src/actions";
-import { OpenClawSettingTab } from "./src/settings";
-import { OpenClawSettings, DEFAULT_SETTINGS } from "./src/types";
+import { RennieSettingTab } from "./src/settings";
+import { RennieSettings, DEFAULT_SETTINGS } from "./src/types";
 import { SyncService } from "./src/syncService";
 import { ConflictModal } from "./src/conflictModal";
 
-export default class OpenClawPlugin extends Plugin {
-  settings: OpenClawSettings;
-  api: OpenClawAPI;
+export default class RenniePlugin extends Plugin {
+  settings: RennieSettings;
+  api: RennieAPI;
   actionExecutor: ActionExecutor;
   syncService: SyncService;
 
   async onload(): Promise<void> {
     await this.loadSettings();
 
-    this.api = new OpenClawAPI(this.settings);
+    this.api = new RennieAPI(this.settings);
     this.actionExecutor = new ActionExecutor(this.app, () => this.settings);
     this.syncService = new SyncService(this.app, () => this.settings);
 
     // Register the chat view
-    this.registerView(OPENCLAW_VIEW_TYPE, (leaf) => new OpenClawView(leaf, this));
+    this.registerView(RENNIE_VIEW_TYPE, (leaf) => new RennieView(leaf, this));
 
     // Add ribbon icon to open chat
-    this.addRibbonIcon("message-circle", "Open OpenClaw Chat", () => {
+    this.addRibbonIcon("message-circle", "Open Rennie Chat", () => {
       this.activateView();
     });
 
     // Add command to open chat
     this.addCommand({
-      id: "open-openclaw-chat",
-      name: "Open OpenClaw Chat",
+      id: "open-rennie-chat",
+      name: "Open Rennie Chat",
       callback: () => this.activateView(),
     });
 
     // Add command to ask about current note
     this.addCommand({
-      id: "ask-openclaw-about-note",
-      name: "Ask OpenClaw about current note",
+      id: "ask-rennie-about-note",
+      name: "Ask Rennie about current note",
       callback: async () => {
         await this.activateView();
       },
@@ -52,19 +52,19 @@ export default class OpenClawPlugin extends Plugin {
     });
 
     // Settings tab
-    this.addSettingTab(new OpenClawSettingTab(this.app, this));
+    this.addSettingTab(new RennieSettingTab(this.app, this));
 
     // Start auto-sync if enabled
     if (this.settings.syncEnabled && this.settings.syncInterval > 0) {
       this.syncService.startAutoSync();
     }
 
-    console.log("OpenClaw loaded 🐉");
+    console.log("Rennie loaded 🏠");
   }
 
   onunload(): void {
     this.syncService.stopAutoSync();
-    console.log("OpenClaw unloaded");
+    console.log("Rennie unloaded");
   }
 
   async loadSettings(): Promise<void> {
@@ -82,7 +82,7 @@ export default class OpenClawPlugin extends Plugin {
   async saveSettings(): Promise<void> {
     await this.saveData(this.settings);
     // Recreate API with new settings
-    this.api = new OpenClawAPI(this.settings);
+    this.api = new RennieAPI(this.settings);
     
     // Update auto-sync
     if (this.settings.syncEnabled && this.settings.syncInterval > 0) {
@@ -120,14 +120,14 @@ export default class OpenClawPlugin extends Plugin {
     const { workspace } = this.app;
 
     let leaf: WorkspaceLeaf | null = null;
-    const leaves = workspace.getLeavesOfType(OPENCLAW_VIEW_TYPE);
+    const leaves = workspace.getLeavesOfType(RENNIE_VIEW_TYPE);
 
     if (leaves.length > 0) {
       leaf = leaves[0];
     } else {
       leaf = workspace.getRightLeaf(false);
       if (leaf) {
-        await leaf.setViewState({ type: OPENCLAW_VIEW_TYPE, active: true });
+        await leaf.setViewState({ type: RENNIE_VIEW_TYPE, active: true });
       }
     }
 

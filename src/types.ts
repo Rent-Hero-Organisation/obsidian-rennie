@@ -1,10 +1,10 @@
 export interface SyncPathConfig {
   remotePath: string;  // Path on Gateway (e.g., "notes")
-  localPath: string;   // Path in vault (e.g., "OpenClaw/Notes")
+  localPath: string;   // Path in vault (e.g., "Rennie/Notes")
   enabled: boolean;
 }
 
-export interface OpenClawSettings {
+export interface RennieSettings {
   gatewayUrl: string;
   // Token storage - uses encrypted if available, falls back to plaintext
   gatewayTokenEncrypted: string | null;
@@ -20,17 +20,17 @@ export interface OpenClawSettings {
   syncConflictBehavior: "ask" | "preferLocal" | "preferRemote";
 }
 
-export const DEFAULT_SETTINGS: OpenClawSettings = {
+export const DEFAULT_SETTINGS: RennieSettings = {
   gatewayUrl: "http://127.0.0.1:18789",
   gatewayTokenEncrypted: null,
   gatewayTokenPlaintext: "",
   showActionsInChat: false,
   auditLogEnabled: false,
-  auditLogPath: "OpenClaw/audit-log.md",
+  auditLogPath: "Rennie/audit-log.md",
   // Sync defaults
   syncEnabled: false,
   syncServerUrl: "http://127.0.0.1:18790",
-  syncPaths: [{ remotePath: "notes", localPath: "OpenClaw/Notes", enabled: true }],
+  syncPaths: [{ remotePath: "notes", localPath: "Rennie/Notes", enabled: true }],
   syncInterval: 0,
   syncConflictBehavior: "ask",
 };
@@ -49,7 +49,7 @@ export interface SyncConflict {
   remoteFile: SyncFileState & { content: string };
 }
 
-export type OpenClawAction =
+export type RennieAction =
   | { action: "createFile"; path: string; content: string }
   | { action: "updateFile"; path: string; content: string }
   | { action: "appendToFile"; path: string; content: string }
@@ -61,10 +61,10 @@ export interface ChatMessage {
   role: "user" | "assistant" | "error";
   content: string;
   timestamp: number;
-  actions?: OpenClawAction[];
+  actions?: RennieAction[];
 }
 
 export interface ChatResponse {
   text: string;
-  actions: OpenClawAction[];
+  actions: RennieAction[];
 }

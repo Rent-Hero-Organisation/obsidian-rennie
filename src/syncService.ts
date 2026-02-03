@@ -1,5 +1,5 @@
 import { App, TFile, TFolder, Notice, requestUrl } from "obsidian";
-import { OpenClawSettings, SyncPathConfig, SyncFileState, SyncConflict } from "./types";
+import { RennieSettings, SyncPathConfig, SyncFileState, SyncConflict } from "./types";
 import { secureTokenStorage } from "./secureStorage";
 import { createHash } from "crypto";
 
@@ -27,7 +27,7 @@ export class SyncService {
 
   constructor(
     private app: App,
-    private getSettings: () => OpenClawSettings
+    private getSettings: () => RennieSettings
   ) {}
 
   private getToken(): string {
@@ -352,7 +352,7 @@ export class SyncService {
       }).catch(console.error);
     }, intervalMs);
 
-    console.log(`OpenClaw: Auto-sync started (every ${settings.syncInterval} min)`);
+    console.log(`Rennie: Auto-sync started (every ${settings.syncInterval} min)`);
   }
 
   /**
@@ -362,7 +362,7 @@ export class SyncService {
     if (this.syncInterval) {
       clearInterval(this.syncInterval);
       this.syncInterval = null;
-      console.log("OpenClaw: Auto-sync stopped");
+      console.log("Rennie: Auto-sync stopped");
     }
   }
 

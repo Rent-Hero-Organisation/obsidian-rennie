@@ -1,5 +1,5 @@
 import { App, TFile, TFolder, Notice, Modal } from "obsidian";
-import { OpenClawAction, OpenClawSettings } from "./types";
+import { RennieAction, RennieSettings } from "./types";
 
 // Actions that require user confirmation before executing
 const DESTRUCTIVE_ACTIONS = ["deleteFile", "updateFile", "renameFile"];
@@ -10,7 +10,7 @@ class ConfirmActionModal extends Modal {
 
   constructor(
     app: App,
-    private action: OpenClawAction,
+    private action: RennieAction,
     private description: string
   ) {
     super(app);
@@ -20,19 +20,19 @@ class ConfirmActionModal extends Modal {
     const { contentEl } = this;
     
     contentEl.createEl("h2", { text: "Confirm Action" });
-    contentEl.createEl("p", { text: "OpenClaw wants to perform the following action:" });
+    contentEl.createEl("p", { text: "Rennie wants to perform the following action:" });
     
-    const detailsEl = contentEl.createDiv({ cls: "openclaw-confirm-details" });
+    const detailsEl = contentEl.createDiv({ cls: "rennie-confirm-details" });
     detailsEl.createEl("strong", { text: this.getActionLabel() });
     detailsEl.createEl("p", { text: this.description });
     
     // Warning for destructive actions
     if (this.action.action === "deleteFile") {
-      const warningEl = contentEl.createDiv({ cls: "openclaw-confirm-warning" });
+      const warningEl = contentEl.createDiv({ cls: "rennie-confirm-warning" });
       warningEl.setText("⚠️ This action cannot be undone.");
     }
 
-    const buttonContainer = contentEl.createDiv({ cls: "openclaw-confirm-buttons" });
+    const buttonContainer = contentEl.createDiv({ cls: "rennie-confirm-buttons" });
     
     const cancelBtn = buttonContainer.createEl("button", { text: "Cancel" });
     cancelBtn.addEventListener("click", () => {
@@ -81,10 +81,10 @@ class ConfirmActionModal extends Modal {
 export class ActionExecutor {
   constructor(
     private app: App,
-    private getSettings: () => OpenClawSettings
+    private getSettings: () => RennieSettings
   ) {}
 
-  async execute(actions: OpenClawAction[]): Promise<{ success: number; failed: number; skipped: number }> {
+  async execute(actions: RennieAction[]): Promise<{ success: number; failed: number; skipped: number }> {
     let success = 0;
     let failed = 0;
     let skipped = 0;
@@ -100,7 +100,7 @@ export class ActionExecutor {
           if (!confirmed) {
             skipped++;
             await this.logAction(action, "skipped");
-            new Notice(`OpenClaw: Skipped ${action.action}`);
+            new Notice(`Rennie: Skipped ${action.action}`);
             continue;
           }
         }
@@ -116,17 +116,17 @@ export class ActionExecutor {
     }
 
     if (success > 0) {
-      new Notice(`OpenClaw: ${success} action(s) completed`);
+      new Notice(`Rennie: ${success} action(s) completed`);
     }
     if (failed > 0) {
-      new Notice(`OpenClaw: ${failed} action(s) failed`);
+      new Notice(`Rennie: ${failed} action(s) failed`);
     }
 
     return { success, failed, skipped };
   }
 
   private async logAction(
-    action: OpenClawAction,
+    action: RennieAction,
     status: "success" | "failed" | "skipped",
     error?: string
   ): Promise<void> {
@@ -176,7 +176,7 @@ export class ActionExecutor {
       }
       
       // Create the log file with header
-      const header = `# OpenClaw Audit Log
+      const header = `# Rennie Audit Log
 
 | Timestamp | Status | Action | Details |
 |-----------|--------|--------|---------|`;
@@ -188,7 +188,7 @@ export class ActionExecutor {
     }
   }
 
-  private getActionDescription(action: OpenClawAction): string {
+  private getActionDescription(action: RennieAction): string {
     switch (action.action) {
       case "deleteFile":
         return `Delete: ${action.path}`;
@@ -201,7 +201,7 @@ export class ActionExecutor {
     }
   }
 
-  private async executeOne(action: OpenClawAction): Promise<void> {
+  private async executeOne(action: RennieAction): Promise<void> {
     const { vault } = this.app;
 
     switch (action.action) {
@@ -269,7 +269,7 @@ export class ActionExecutor {
       }
 
       default:
-        throw new Error(`Unknown action: ${(action as OpenClawAction).action}`);
+        throw new Error(`Unknown action: ${(action as RennieAction).action}`);
     }
   }
 }

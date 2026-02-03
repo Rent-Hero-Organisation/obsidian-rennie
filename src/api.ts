@@ -1,9 +1,9 @@
 import { requestUrl } from "obsidian";
-import { OpenClawSettings, ChatResponse, OpenClawAction } from "./types";
+import { RennieSettings, ChatResponse, RennieAction } from "./types";
 import { secureTokenStorage } from "./secureStorage";
 
-export class OpenClawAPI {
-  constructor(private settings: OpenClawSettings) {}
+export class RennieAPI {
+  constructor(private settings: RennieSettings) {}
 
   private getToken(): string {
     return secureTokenStorage.getToken(
@@ -17,9 +17,9 @@ export class OpenClawAPI {
     context?: { currentFile?: string; currentContent?: string }
   ): Promise<ChatResponse> {
     const systemParts: string[] = [
-      "You are OpenClaw, a helpful assistant in Obsidian.",
+      "You are Rennie, the RentHero assistant in Obsidian.",
       "When asked to create or modify files, include a JSON action block.",
-      "Format: ```json:openclaw-actions\\n[{\"action\": \"...\", ...}]\\n```",
+      "Format: ```json:rennie-actions\\n[{\"action\": \"...\", ...}]\\n```",
       "Supported actions: createFile, updateFile, appendToFile, deleteFile, renameFile, openFile",
     ];
 
@@ -69,18 +69,18 @@ export class OpenClawAPI {
     };
   }
 
-  private parseActions(text: string): OpenClawAction[] {
-    const match = text.match(/```json:openclaw-actions\n([\s\S]*?)```/);
+  private parseActions(text: string): RennieAction[] {
+    const match = text.match(/```json:rennie-actions\n([\s\S]*?)```/);
     if (!match) return [];
     try {
       return JSON.parse(match[1]);
     } catch {
-      console.error("Failed to parse openclaw-actions:", match[1]);
+      console.error("Failed to parse rennie-actions:", match[1]);
       return [];
     }
   }
 
   private stripActionBlocks(text: string): string {
-    return text.replace(/```json:openclaw-actions\n[\s\S]*?```\n?/g, "").trim();
+    return text.replace(/```json:rennie-actions\n[\s\S]*?```\n?/g, "").trim();
   }
 }

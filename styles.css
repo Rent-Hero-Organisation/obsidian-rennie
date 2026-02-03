@@ -1,5 +1,5 @@
-/* OpenClaw Chat Container */
-.openclaw-chat-container {
+/* Rennie Chat Container */
+.rennie-chat-container {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -7,7 +7,7 @@
 }
 
 /* Messages Area */
-.openclaw-messages {
+.rennie-messages {
   flex: 1;
   overflow-y: auto;
   padding: 12px;
@@ -17,41 +17,41 @@
 }
 
 /* Individual Message */
-.openclaw-message {
+.rennie-message {
   padding: 10px 14px;
   border-radius: 12px;
   max-width: 90%;
   word-wrap: break-word;
 }
 
-.openclaw-message.openclaw-user {
+.rennie-message.rennie-user {
   background: var(--interactive-accent);
   color: var(--text-on-accent);
   align-self: flex-end;
   border-bottom-right-radius: 4px;
 }
 
-.openclaw-message.openclaw-assistant {
+.rennie-message.rennie-assistant {
   background: var(--background-secondary);
   align-self: flex-start;
   border-bottom-left-radius: 4px;
 }
 
-.openclaw-message.openclaw-loading {
+.rennie-message.rennie-loading {
   background: var(--background-secondary);
   color: var(--text-muted);
   font-style: italic;
   align-self: flex-start;
 }
 
-.openclaw-message.openclaw-error {
+.rennie-message.rennie-error {
   background: var(--background-modifier-error);
   border: 1px solid var(--text-error);
   align-self: stretch;
   max-width: 100%;
 }
 
-.openclaw-error-text {
+.rennie-error-text {
   display: block;
   padding: 8px;
   background: var(--background-primary);
@@ -63,7 +63,7 @@
   cursor: text;
 }
 
-.openclaw-copy-btn {
+.rennie-copy-btn {
   margin-top: 8px;
   padding: 4px 10px;
   font-size: 12px;
@@ -74,23 +74,23 @@
   color: var(--text-muted);
 }
 
-.openclaw-copy-btn:hover {
+.rennie-copy-btn:hover {
   background: var(--background-modifier-hover);
 }
 
-.openclaw-message-content {
+.rennie-message-content {
   line-height: 1.5;
 }
 
-.openclaw-message-content p:first-child {
+.rennie-message-content p:first-child {
   margin-top: 0;
 }
 
-.openclaw-message-content p:last-child {
+.rennie-message-content p:last-child {
   margin-bottom: 0;
 }
 
-.openclaw-actions {
+.rennie-actions {
   font-size: 0.85em;
   color: var(--text-muted);
   margin-top: 8px;
@@ -99,13 +99,13 @@
 }
 
 /* Input Area */
-.openclaw-input-container {
+.rennie-input-container {
   padding: 12px;
   border-top: 1px solid var(--background-modifier-border);
   background: var(--background-primary);
 }
 
-.openclaw-input {
+.rennie-input {
   width: 100%;
   min-height: 60px;
   padding: 10px;
@@ -118,23 +118,23 @@
   resize: vertical;
 }
 
-.openclaw-input:focus {
+.rennie-input:focus {
   outline: none;
   border-color: var(--interactive-accent);
 }
 
-.openclaw-input::placeholder {
+.rennie-input::placeholder {
   color: var(--text-muted);
 }
 
-.openclaw-button-row {
+.rennie-button-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 8px;
 }
 
-.openclaw-toggle {
+.rennie-toggle {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -143,11 +143,11 @@
   cursor: pointer;
 }
 
-.openclaw-toggle input {
+.rennie-toggle input {
   cursor: pointer;
 }
 
-.openclaw-send-btn {
+.rennie-send-btn {
   padding: 8px 16px;
   background: var(--interactive-accent);
   color: var(--text-on-accent);
@@ -157,51 +157,51 @@
   font-weight: 500;
 }
 
-.openclaw-send-btn:hover {
+.rennie-send-btn:hover {
   background: var(--interactive-accent-hover);
 }
 
 /* Settings */
-.openclaw-test-container {
+.rennie-test-container {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-top: 8px;
 }
 
-.openclaw-test-result {
+.rennie-test-result {
   font-size: 13px;
 }
 
-.openclaw-test-success {
+.rennie-test-success {
   color: var(--text-success);
 }
 
-.openclaw-test-error {
+.rennie-test-error {
   color: var(--text-error);
 }
 
 /* Confirmation Modal */
-.openclaw-confirm-details {
+.rennie-confirm-details {
   background: var(--background-secondary);
   padding: 12px;
   border-radius: 6px;
   margin: 12px 0;
 }
 
-.openclaw-confirm-details strong {
+.rennie-confirm-details strong {
   display: block;
   margin-bottom: 6px;
 }
 
-.openclaw-confirm-details p {
+.rennie-confirm-details p {
   margin: 0;
   font-family: var(--font-monospace);
   font-size: 13px;
   word-break: break-all;
 }
 
-.openclaw-confirm-warning {
+.rennie-confirm-warning {
   color: var(--text-error);
   background: var(--background-modifier-error);
   padding: 8px 12px;
@@ -210,7 +210,7 @@
   font-weight: 500;
 }
 
-.openclaw-confirm-buttons {
+.rennie-confirm-buttons {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
@@ -218,37 +218,37 @@
 }
 
 /* Token Security Status */
-.openclaw-token-status {
+.rennie-token-status {
   margin: -8px 0 12px 0;
   font-size: 12px;
 }
 
-.openclaw-status-secure {
+.rennie-status-secure {
   color: var(--text-success);
 }
 
-.openclaw-status-insecure {
+.rennie-status-insecure {
   color: var(--text-warning);
 }
 
 /* Security Info */
-.openclaw-security-info {
+.rennie-security-info {
   background: var(--background-secondary);
   padding: 12px 16px;
   border-radius: 6px;
   font-size: 13px;
 }
 
-.openclaw-security-info ol {
+.rennie-security-info ol {
   margin: 8px 0 0 0;
   padding-left: 20px;
 }
 
-.openclaw-security-info li {
+.rennie-security-info li {
   margin-bottom: 6px;
 }
 
-.openclaw-security-info code {
+.rennie-security-info code {
   background: var(--background-primary);
   padding: 2px 4px;
   border-radius: 3px;
@@ -256,93 +256,93 @@
 }
 
 /* Sync Settings */
-.openclaw-sync-paths {
+.rennie-sync-paths {
   margin: 12px 0;
 }
 
-.openclaw-sync-path-item {
+.rennie-sync-path-item {
   background: var(--background-secondary);
   padding: 8px 12px;
   border-radius: 6px;
   margin-bottom: 8px;
 }
 
-.openclaw-sync-path-item .setting-item {
+.rennie-sync-path-item .setting-item {
   border: none;
   padding: 0;
 }
 
-.openclaw-sync-actions {
+.rennie-sync-actions {
   display: flex;
   align-items: center;
   gap: 12px;
   margin: 12px 0;
 }
 
-.openclaw-sync-status {
+.rennie-sync-status {
   font-size: 13px;
 }
 
 /* Conflict Modal */
-.openclaw-conflict-modal {
+.rennie-conflict-modal {
   max-width: 700px;
 }
 
-.openclaw-conflict-desc {
+.rennie-conflict-desc {
   color: var(--text-muted);
   margin-bottom: 16px;
 }
 
-.openclaw-conflict-comparison {
+.rennie-conflict-comparison {
   display: flex;
   gap: 16px;
   margin-bottom: 16px;
 }
 
-.openclaw-conflict-side {
+.rennie-conflict-side {
   flex: 1;
   background: var(--background-secondary);
   padding: 12px;
   border-radius: 6px;
 }
 
-.openclaw-conflict-side h3 {
+.rennie-conflict-side h3 {
   margin: 0 0 8px 0;
   font-size: 14px;
 }
 
-.openclaw-conflict-meta {
+.rennie-conflict-meta {
   font-size: 12px;
   color: var(--text-muted);
   margin: 4px 0;
 }
 
-.openclaw-conflict-diff-toggle {
+.rennie-conflict-diff-toggle {
   margin-bottom: 12px;
 }
 
-.openclaw-conflict-diff {
+.rennie-conflict-diff {
   display: none;
   gap: 16px;
   margin-bottom: 16px;
   max-height: 300px;
 }
 
-.openclaw-diff-pane {
+.rennie-diff-pane {
   flex: 1;
   background: var(--background-secondary);
   border-radius: 6px;
   overflow: hidden;
 }
 
-.openclaw-diff-pane h4 {
+.rennie-diff-pane h4 {
   margin: 0;
   padding: 8px 12px;
   background: var(--background-modifier-border);
   font-size: 12px;
 }
 
-.openclaw-diff-content {
+.rennie-diff-content {
   margin: 0;
   padding: 12px;
   overflow: auto;
@@ -350,18 +350,18 @@
   font-size: 12px;
 }
 
-.openclaw-diff-content code {
+.rennie-diff-content code {
   white-space: pre-wrap;
   word-break: break-word;
 }
 
-.openclaw-conflict-buttons {
+.rennie-conflict-buttons {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
 }
 
-.openclaw-btn-primary {
+.rennie-btn-primary {
   background: var(--interactive-accent);
   color: var(--text-on-accent);
   border: none;
@@ -370,11 +370,11 @@
   cursor: pointer;
 }
 
-.openclaw-btn-primary:hover {
+.rennie-btn-primary:hover {
   background: var(--interactive-accent-hover);
 }
 
-.openclaw-btn-secondary {
+.rennie-btn-secondary {
   background: var(--background-secondary);
   border: 1px solid var(--background-modifier-border);
   padding: 8px 16px;

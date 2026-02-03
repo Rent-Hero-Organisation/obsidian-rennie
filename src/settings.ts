@@ -1,10 +1,10 @@
 import { App, PluginSettingTab, Setting, Notice } from "obsidian";
-import type OpenClawPlugin from "../main";
+import type RenniePlugin from "../main";
 import { secureTokenStorage } from "./secureStorage";
 import { SyncPathConfig } from "./types";
 
-export class OpenClawSettingTab extends PluginSettingTab {
-  constructor(app: App, private plugin: OpenClawPlugin) {
+export class RennieSettingTab extends PluginSettingTab {
+  constructor(app: App, private plugin: RenniePlugin) {
     super(app, plugin);
   }
 
@@ -17,7 +17,7 @@ export class OpenClawSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Gateway URL")
-      .setDesc("URL of your OpenClaw gateway. Do not include a trailing slash.")
+      .setDesc("URL of your RentHero gateway. Do not include a trailing slash.")
       .addText((text) =>
         text
           .setPlaceholder("http://127.0.0.1:18789")
@@ -32,11 +32,11 @@ export class OpenClawSettingTab extends PluginSettingTab {
     const statusInfo = secureTokenStorage.getStatusInfo();
     const tokenSetting = new Setting(containerEl)
       .setName("Gateway Token")
-      .setDesc("Authentication token for the OpenClaw gateway");
+      .setDesc("Authentication token for the RentHero gateway");
 
-    const statusEl = containerEl.createDiv({ cls: "openclaw-token-status" });
+    const statusEl = containerEl.createDiv({ cls: "rennie-token-status" });
     const statusIcon = statusInfo.secure ? "🔒" : "⚠️";
-    statusEl.innerHTML = `<span class="openclaw-status-${statusInfo.secure ? 'secure' : 'insecure'}">${statusIcon} ${statusInfo.description}</span>`;
+    statusEl.innerHTML = `<span class="rennie-status-${statusInfo.secure ? 'secure' : 'insecure'}">${statusIcon} ${statusInfo.description}</span>`;
 
     if (statusInfo.method === "envVar") {
       tokenSetting.addButton((btn) =>
@@ -94,10 +94,10 @@ export class OpenClawSettingTab extends PluginSettingTab {
       .setDesc("Path to the audit log file (relative to vault root)")
       .addText((text) =>
         text
-          .setPlaceholder("OpenClaw/audit-log.md")
+          .setPlaceholder("Rennie/audit-log.md")
           .setValue(this.plugin.settings.auditLogPath)
           .onChange(async (value) => {
-            this.plugin.settings.auditLogPath = value || "OpenClaw/audit-log.md";
+            this.plugin.settings.auditLogPath = value || "Rennie/audit-log.md";
             await this.plugin.saveSettings();
           })
       );
@@ -107,7 +107,7 @@ export class OpenClawSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Enable sync")
-      .setDesc("Sync files between your vault and the OpenClaw gateway")
+      .setDesc("Sync files between your vault and the RentHero server")
       .addToggle((toggle) =>
         toggle
           .setValue(this.plugin.settings.syncEnabled)
@@ -171,7 +171,7 @@ export class OpenClawSettingTab extends PluginSettingTab {
         cls: "setting-item-description"
       });
 
-      const pathsContainer = containerEl.createDiv({ cls: "openclaw-sync-paths" });
+      const pathsContainer = containerEl.createDiv({ cls: "rennie-sync-paths" });
       
       this.plugin.settings.syncPaths.forEach((pathConfig, index) => {
         this.renderSyncPath(pathsContainer, pathConfig, index);
@@ -195,21 +195,21 @@ export class OpenClawSettingTab extends PluginSettingTab {
       // Sync actions
       containerEl.createEl("h4", { text: "Sync Actions" });
 
-      const syncActionsContainer = containerEl.createDiv({ cls: "openclaw-sync-actions" });
+      const syncActionsContainer = containerEl.createDiv({ cls: "rennie-sync-actions" });
       
       const testBtn = syncActionsContainer.createEl("button", { text: "Test Connection" });
       const syncNowBtn = syncActionsContainer.createEl("button", { text: "Sync Now", cls: "mod-cta" });
-      const statusSpan = syncActionsContainer.createEl("span", { cls: "openclaw-sync-status" });
+      const statusSpan = syncActionsContainer.createEl("span", { cls: "rennie-sync-status" });
 
       testBtn.addEventListener("click", async () => {
         statusSpan.setText("Testing...");
         const result = await this.plugin.syncService.testConnection();
         if (result.ok) {
           statusSpan.setText("✓ Connected");
-          statusSpan.addClass("openclaw-test-success");
+          statusSpan.addClass("rennie-test-success");
         } else {
           statusSpan.setText(`✗ ${result.error}`);
-          statusSpan.addClass("openclaw-test-error");
+          statusSpan.addClass("rennie-test-error");
         }
       });
 
@@ -218,10 +218,10 @@ export class OpenClawSettingTab extends PluginSettingTab {
         try {
           await this.plugin.runSync();
           statusSpan.setText("✓ Sync complete");
-          statusSpan.addClass("openclaw-test-success");
+          statusSpan.addClass("rennie-test-success");
         } catch (err) {
           statusSpan.setText(`✗ ${err instanceof Error ? err.message : "Sync failed"}`);
-          statusSpan.addClass("openclaw-test-error");
+          statusSpan.addClass("rennie-test-error");
         }
       });
     }
@@ -229,39 +229,39 @@ export class OpenClawSettingTab extends PluginSettingTab {
     // ===== CONNECTION TEST =====
     containerEl.createEl("h3", { text: "Chat Connection Test" });
 
-    const testContainer = containerEl.createDiv({ cls: "openclaw-test-container" });
+    const testContainer = containerEl.createDiv({ cls: "rennie-test-container" });
     const testBtn = testContainer.createEl("button", { text: "Test Chat Connection" });
-    const testResult = testContainer.createEl("span", { cls: "openclaw-test-result" });
+    const testResult = testContainer.createEl("span", { cls: "rennie-test-result" });
 
     testBtn.addEventListener("click", async () => {
       testResult.setText("Testing...");
-      testResult.removeClass("openclaw-test-success", "openclaw-test-error");
+      testResult.removeClass("rennie-test-success", "rennie-test-error");
       try {
         const response = await this.plugin.api.chat("Say 'Connection successful!' in 5 words or less", {});
         testResult.setText(`✓ ${response.text}`);
-        testResult.addClass("openclaw-test-success");
+        testResult.addClass("rennie-test-success");
       } catch (err) {
         testResult.setText(`✗ ${err instanceof Error ? err.message : "Failed"}`);
-        testResult.addClass("openclaw-test-error");
+        testResult.addClass("rennie-test-error");
       }
     });
 
     // ===== SECURITY INFO =====
     containerEl.createEl("h3", { text: "Security Info" });
     
-    const securityInfo = containerEl.createDiv({ cls: "openclaw-security-info" });
+    const securityInfo = containerEl.createDiv({ cls: "rennie-security-info" });
     securityInfo.innerHTML = `
       <p><strong>Token Storage Methods (in priority order):</strong></p>
       <ol>
         <li><strong>Environment Variable</strong> — Set <code>OPENCLAW_TOKEN</code> to keep the token out of Obsidian entirely</li>
         <li><strong>OS Keychain</strong> — Uses Electron safeStorage (Keychain on macOS, DPAPI on Windows, libsecret on Linux)</li>
-        <li><strong>Plaintext</strong> — Stored in plugin settings. Avoid syncing <code>.obsidian/plugins/obsidian-openclaw/</code></li>
+        <li><strong>Plaintext</strong> — Stored in plugin settings. Avoid syncing <code>.obsidian/plugins/obsidian-renthero-sync/</code></li>
       </ol>
     `;
   }
 
   private renderSyncPath(container: HTMLElement, pathConfig: SyncPathConfig, index: number): void {
-    const pathEl = container.createDiv({ cls: "openclaw-sync-path-item" });
+    const pathEl = container.createDiv({ cls: "rennie-sync-path-item" });
 
     new Setting(pathEl)
       .setName(`Path ${index + 1}`)
@@ -285,7 +285,7 @@ export class OpenClawSettingTab extends PluginSettingTab {
       )
       .addText((text) =>
         text
-          .setPlaceholder("Local path (e.g., OpenClaw/Notes)")
+          .setPlaceholder("Local path (e.g., Rennie/Notes)")
           .setValue(pathConfig.localPath)
           .onChange(async (value) => {
             this.plugin.settings.syncPaths[index].localPath = value;

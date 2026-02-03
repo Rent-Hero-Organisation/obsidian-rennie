@@ -15,19 +15,19 @@ export class ConflictModal extends Modal {
 
   onOpen() {
     const { contentEl } = this;
-    contentEl.addClass("openclaw-conflict-modal");
+    contentEl.addClass("rennie-conflict-modal");
 
     contentEl.createEl("h2", { text: "Sync Conflict" });
     contentEl.createEl("p", { 
       text: `The file "${this.conflict.localPath}" has been modified in both locations.`,
-      cls: "openclaw-conflict-desc"
+      cls: "rennie-conflict-desc"
     });
 
     // File comparison
-    const comparisonEl = contentEl.createDiv({ cls: "openclaw-conflict-comparison" });
+    const comparisonEl = contentEl.createDiv({ cls: "rennie-conflict-comparison" });
 
     // Local file info
-    const localEl = comparisonEl.createDiv({ cls: "openclaw-conflict-side openclaw-conflict-local" });
+    const localEl = comparisonEl.createDiv({ cls: "rennie-conflict-side rennie-conflict-local" });
     localEl.createEl("h3", { text: "📁 Local (Obsidian)" });
     this.renderFileInfo(localEl, {
       modified: this.conflict.localFile.modified,
@@ -35,7 +35,7 @@ export class ConflictModal extends Modal {
     });
 
     // Remote file info
-    const remoteEl = comparisonEl.createDiv({ cls: "openclaw-conflict-side openclaw-conflict-remote" });
+    const remoteEl = comparisonEl.createDiv({ cls: "rennie-conflict-side rennie-conflict-remote" });
     remoteEl.createEl("h3", { text: "☁️ Remote (Gateway)" });
     this.renderFileInfo(remoteEl, {
       modified: this.conflict.remoteFile.modified,
@@ -43,10 +43,10 @@ export class ConflictModal extends Modal {
     });
 
     // Toggle diff view
-    const diffToggle = contentEl.createDiv({ cls: "openclaw-conflict-diff-toggle" });
+    const diffToggle = contentEl.createDiv({ cls: "rennie-conflict-diff-toggle" });
     const diffBtn = diffToggle.createEl("button", { 
       text: "Show Side-by-Side", 
-      cls: "openclaw-btn-secondary" 
+      cls: "rennie-btn-secondary" 
     });
     diffBtn.addEventListener("click", () => {
       this.showDiff = !this.showDiff;
@@ -55,14 +55,14 @@ export class ConflictModal extends Modal {
     });
 
     // Diff container (initially hidden)
-    contentEl.createDiv({ cls: "openclaw-conflict-diff", attr: { id: "diff-container" } });
+    contentEl.createDiv({ cls: "rennie-conflict-diff", attr: { id: "diff-container" } });
 
     // Action buttons
-    const buttonsEl = contentEl.createDiv({ cls: "openclaw-conflict-buttons" });
+    const buttonsEl = contentEl.createDiv({ cls: "rennie-conflict-buttons" });
 
     const keepLocalBtn = buttonsEl.createEl("button", { 
       text: "Keep Local",
-      cls: "openclaw-btn-primary"
+      cls: "rennie-btn-primary"
     });
     keepLocalBtn.addEventListener("click", () => {
       this.result = "local";
@@ -71,7 +71,7 @@ export class ConflictModal extends Modal {
 
     const keepRemoteBtn = buttonsEl.createEl("button", { 
       text: "Keep Remote",
-      cls: "openclaw-btn-primary"
+      cls: "rennie-btn-primary"
     });
     keepRemoteBtn.addEventListener("click", () => {
       this.result = "remote";
@@ -80,7 +80,7 @@ export class ConflictModal extends Modal {
 
     const skipBtn = buttonsEl.createEl("button", { 
       text: "Skip",
-      cls: "openclaw-btn-secondary"
+      cls: "rennie-btn-secondary"
     });
     skipBtn.addEventListener("click", () => {
       this.result = "skip";
@@ -89,16 +89,16 @@ export class ConflictModal extends Modal {
   }
 
   private renderFileInfo(container: HTMLElement, info: { modified: string; size: number }) {
-    const infoEl = container.createDiv({ cls: "openclaw-conflict-info" });
+    const infoEl = container.createDiv({ cls: "rennie-conflict-info" });
     
     const modDate = new Date(info.modified);
     infoEl.createEl("div", { 
       text: `Modified: ${modDate.toLocaleString()}`,
-      cls: "openclaw-conflict-meta"
+      cls: "rennie-conflict-meta"
     });
     infoEl.createEl("div", { 
       text: `Size: ${this.formatSize(info.size)}`,
-      cls: "openclaw-conflict-meta"
+      cls: "rennie-conflict-meta"
     });
   }
 
@@ -122,15 +122,15 @@ export class ConflictModal extends Modal {
     diffContainer.style.display = "flex";
 
     // Local content
-    const localDiff = diffContainer.createDiv({ cls: "openclaw-diff-pane" });
+    const localDiff = diffContainer.createDiv({ cls: "rennie-diff-pane" });
     localDiff.createEl("h4", { text: "Local" });
-    const localContent = localDiff.createEl("pre", { cls: "openclaw-diff-content" });
+    const localContent = localDiff.createEl("pre", { cls: "rennie-diff-content" });
     localContent.createEl("code", { text: this.conflict.localFile.content });
 
     // Remote content
-    const remoteDiff = diffContainer.createDiv({ cls: "openclaw-diff-pane" });
+    const remoteDiff = diffContainer.createDiv({ cls: "rennie-diff-pane" });
     remoteDiff.createEl("h4", { text: "Remote" });
-    const remoteContent = remoteDiff.createEl("pre", { cls: "openclaw-diff-content" });
+    const remoteContent = remoteDiff.createEl("pre", { cls: "rennie-diff-content" });
     remoteContent.createEl("code", { text: this.conflict.remoteFile.content });
   }
 

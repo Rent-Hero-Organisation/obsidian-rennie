@@ -1,25 +1,25 @@
 import { ItemView, WorkspaceLeaf, MarkdownRenderer, TFile } from "obsidian";
-import type OpenClawPlugin from "../main";
+import type RenniePlugin from "../main";
 import { ChatMessage } from "./types";
 
-export const OPENCLAW_VIEW_TYPE = "openclaw-chat-view";
+export const RENNIE_VIEW_TYPE = "rennie-chat-view";
 
-export class OpenClawView extends ItemView {
+export class RennieView extends ItemView {
   private messages: ChatMessage[] = [];
   private inputEl: HTMLTextAreaElement;
   private messagesEl: HTMLElement;
   private isLoading = false;
 
-  constructor(leaf: WorkspaceLeaf, private plugin: OpenClawPlugin) {
+  constructor(leaf: WorkspaceLeaf, private plugin: RenniePlugin) {
     super(leaf);
   }
 
   getViewType(): string {
-    return OPENCLAW_VIEW_TYPE;
+    return RENNIE_VIEW_TYPE;
   }
 
   getDisplayText(): string {
-    return "OpenClaw";
+    return "Ask Rennie Anything";
   }
 
   getIcon(): string {
@@ -29,28 +29,28 @@ export class OpenClawView extends ItemView {
   async onOpen(): Promise<void> {
     const container = this.containerEl.children[1];
     container.empty();
-    container.addClass("openclaw-chat-container");
+    container.addClass("rennie-chat-container");
 
     // Messages area
-    this.messagesEl = container.createDiv({ cls: "openclaw-messages" });
+    this.messagesEl = container.createDiv({ cls: "rennie-messages" });
 
     // Input area
-    const inputContainer = container.createDiv({ cls: "openclaw-input-container" });
+    const inputContainer = container.createDiv({ cls: "rennie-input-container" });
     
     this.inputEl = inputContainer.createEl("textarea", {
-      cls: "openclaw-input",
-      attr: { placeholder: "Ask OpenClaw anything...", rows: "2" },
+      cls: "rennie-input",
+      attr: { placeholder: "Ask Rennie anything...", rows: "2" },
     });
 
-    const buttonRow = inputContainer.createDiv({ cls: "openclaw-button-row" });
+    const buttonRow = inputContainer.createDiv({ cls: "rennie-button-row" });
     
-    const includeNoteToggle = buttonRow.createEl("label", { cls: "openclaw-toggle" });
+    const includeNoteToggle = buttonRow.createEl("label", { cls: "rennie-toggle" });
     const checkbox = includeNoteToggle.createEl("input", { type: "checkbox" });
     checkbox.checked = true;
     includeNoteToggle.appendText(" Include current note");
     
     const sendBtn = buttonRow.createEl("button", {
-      cls: "openclaw-send-btn",
+      cls: "rennie-send-btn",
       text: "Send",
     });
 
@@ -66,7 +66,7 @@ export class OpenClawView extends ItemView {
     // Welcome message
     this.addMessage({
       role: "assistant",
-      content: "Hey! 🐉 I'm OpenClaw. Ask me anything, or ask me to create/edit notes.",
+      content: "Hey! 🏠 I'm Rennie, your RentHero assistant. Ask me anything, or ask me to create/edit notes.",
       timestamp: Date.now(),
     });
   }
@@ -100,8 +100,8 @@ export class OpenClawView extends ItemView {
     }
 
     // Show loading indicator
-    const loadingEl = this.messagesEl.createDiv({ cls: "openclaw-message openclaw-loading" });
-    loadingEl.setText("OpenClaw is thinking...");
+    const loadingEl = this.messagesEl.createDiv({ cls: "rennie-message rennie-loading" });
+    loadingEl.setText("Rennie is thinking...");
 
     try {
       const response = await this.plugin.api.chat(message, context);
@@ -138,10 +138,10 @@ export class OpenClawView extends ItemView {
     this.messages.push(msg);
 
     const messageEl = this.messagesEl.createDiv({
-      cls: `openclaw-message openclaw-${msg.role}`,
+      cls: `rennie-message rennie-${msg.role}`,
     });
 
-    const contentEl = messageEl.createDiv({ cls: "openclaw-message-content" });
+    const contentEl = messageEl.createDiv({ cls: "rennie-message-content" });
     
     // Render markdown for assistant messages
     if (msg.role === "assistant") {
@@ -154,11 +154,11 @@ export class OpenClawView extends ItemView {
       );
     } else if (msg.role === "error") {
       // Error messages are selectable/copyable
-      const errorText = contentEl.createEl("code", { cls: "openclaw-error-text" });
+      const errorText = contentEl.createEl("code", { cls: "rennie-error-text" });
       errorText.setText(msg.content);
       
       const copyBtn = contentEl.createEl("button", { 
-        cls: "openclaw-copy-btn",
+        cls: "rennie-copy-btn",
         text: "Copy"
       });
       copyBtn.addEventListener("click", async () => {
@@ -172,7 +172,7 @@ export class OpenClawView extends ItemView {
 
     // Show actions if any
     if (msg.actions && msg.actions.length > 0 && this.plugin.settings.showActionsInChat) {
-      const actionsEl = messageEl.createDiv({ cls: "openclaw-actions" });
+      const actionsEl = messageEl.createDiv({ cls: "rennie-actions" });
       actionsEl.setText(`📁 ${msg.actions.length} file action(s)`);
     }
 

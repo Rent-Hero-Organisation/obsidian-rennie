@@ -35,18 +35,18 @@ function getSafeStorage(): SafeStorage | null {
     // Verify it actually works
     if (safeStorage && safeStorage.isEncryptionAvailable()) {
       safeStorageAvailable = true;
-      console.log("OpenClaw: safeStorage available");
+      console.log("Rennie: safeStorage available");
       return safeStorage;
     }
   } catch (e) {
-    console.log("OpenClaw: safeStorage not available", e);
+    console.log("Rennie: safeStorage not available", e);
   }
 
   safeStorageAvailable = false;
   return null;
 }
 
-// Check for environment variable
+// Check for environment variable (OPENCLAW_TOKEN is the actual gateway token)
 function getEnvToken(): string | null {
   try {
     const token = process.env.OPENCLAW_TOKEN;
@@ -115,7 +115,7 @@ export class SecureTokenStorage {
         this.plaintextToken = "";
         return { encrypted: this.encryptedToken, plaintext: "" };
       } catch (e) {
-        console.error("OpenClaw: Failed to encrypt token", e);
+        console.error("Rennie: Failed to encrypt token", e);
       }
     }
 
@@ -143,7 +143,7 @@ export class SecureTokenStorage {
           const buffer = Buffer.from(encrypted, "base64");
           return storage.decryptString(buffer);
         } catch (e) {
-          console.error("OpenClaw: Failed to decrypt token", e);
+          console.error("Rennie: Failed to decrypt token", e);
         }
       }
     }
