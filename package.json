@@ -1,7 +1,7 @@
 {
   "name": "obsidian-renthero-sync",
-  "version": "0.7.0",
-  "description": "Team vault sync & AI chat for RentHero",
+  "version": "0.8.0",
+  "description": "AI-powered knowledge hub for your team — chat with Rennie, sync notes bidirectionally",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",

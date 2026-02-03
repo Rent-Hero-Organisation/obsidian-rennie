@@ -69,9 +69,29 @@ var RennieView = class extends import_obsidian.ItemView {
         this.sendMessage(checkbox.checked);
       }
     });
+    const welcomeEl = this.messagesEl.createDiv({ cls: "rennie-welcome" });
+    welcomeEl.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="64" height="64" style="margin-bottom: 8px; opacity: 0.9;">
+        <g>
+          <animateTransform attributeName="transform" type="translate" values="0,0; 0,-1; 0,0" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"/>
+          <rect x="24" y="40" width="72" height="58" rx="8" fill="#E8846B"/>
+          <polygon points="60,10 18,44 102,44" fill="#CC6B52"/>
+          <rect x="80" y="16" width="8" height="20" rx="2" fill="#E8846B"/>
+          <circle cx="46" cy="62" r="8" fill="#1A1A1A"/><circle cx="43" cy="59" r="3" fill="#FFF" opacity="0.85"/>
+          <circle cx="74" cy="62" r="8" fill="#1A1A1A"/><circle cx="71" cy="59" r="3" fill="#FFF" opacity="0.85"/>
+          <ellipse cx="36" cy="72" rx="6" ry="3.5" fill="#CC6B52" opacity="0.35"/>
+          <ellipse cx="84" cy="72" rx="6" ry="3.5" fill="#CC6B52" opacity="0.35"/>
+          <path d="M52 78 Q60 84 68 78" fill="none" stroke="#CC6B52" stroke-width="2" stroke-linecap="round"/>
+          <ellipse cx="40" cy="100" rx="10" ry="6" fill="#E8846B"/>
+          <ellipse cx="80" cy="100" rx="10" ry="6" fill="#E8846B"/>
+        </g>
+      </svg>
+      <div class="rennie-welcome-text">Ask me anything</div>
+      <div class="rennie-welcome-hint">I know your vault. Try \u2318+Enter to send.</div>
+    `;
     this.addMessage({
       role: "assistant",
-      content: "Hey! \u{1F3E0} I'm Rennie, your RentHero assistant. Ask me anything, or ask me to create/edit notes.",
+      content: "Hey! I'm Rennie \u2014 ask me anything, or ask me to create and edit notes.",
       timestamp: Date.now()
     });
   }
@@ -642,16 +662,25 @@ var RennieSettingTab = class extends import_obsidian4.PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    containerEl.createEl("h2", { text: "\u{1F3E0} Rennie Connection" });
+    containerEl.createEl("h2", { text: "Connection" });
     const token = secureTokenStorage.getToken(
       this.plugin.settings.gatewayTokenEncrypted,
       this.plugin.settings.gatewayTokenPlaintext
     );
     if (token) {
       const statusDiv = containerEl.createDiv({ cls: "rennie-connected" });
-      statusDiv.innerHTML = `<div style="padding: 12px; background: #1a3a2a; border-radius: 8px; border: 1px solid #2d5a3d; margin-bottom: 16px;">
-        <span style="color: #4ecca3; font-weight: bold;">\u2705 Connected to Rennie</span>
-        <p style="color: #a0a0a0; margin: 4px 0 0; font-size: 12px;">Token stored securely. Chat and sync are ready.</p>
+      statusDiv.innerHTML = `<div style="padding: 14px 16px; background: rgba(232,132,107,0.06); border-radius: 10px; border: 1px solid rgba(232,132,107,0.15); margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="36" height="36" style="flex-shrink:0;">
+          <rect x="24" y="40" width="72" height="58" rx="8" fill="#E8846B"/>
+          <polygon points="60,10 18,44 102,44" fill="#CC6B52"/>
+          <circle cx="46" cy="62" r="8" fill="#1A1A1A"/><circle cx="43" cy="59" r="3" fill="#FFF" opacity="0.85"/>
+          <circle cx="74" cy="62" r="8" fill="#1A1A1A"/><circle cx="71" cy="59" r="3" fill="#FFF" opacity="0.85"/>
+          <path d="M52 78 Q60 84 68 78" fill="none" stroke="#CC6B52" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <span style="color: #E8846B; font-weight: 600; font-size: 14px;">Connected to Rennie</span>
+          <p style="color: var(--text-muted); margin: 2px 0 0; font-size: 13px;">Chat and sync are ready.</p>
+        </div>
       </div>`;
       new import_obsidian4.Setting(containerEl).setName("Logout").setDesc("Remove stored credentials").addButton(
         (btn) => btn.setButtonText("Logout").setWarning().onClick(async () => {
@@ -663,10 +692,22 @@ var RennieSettingTab = class extends import_obsidian4.PluginSettingTab {
       );
     } else {
       const loginDiv = containerEl.createDiv({ cls: "rennie-login" });
-      loginDiv.innerHTML = `<div style="padding: 20px; background: #1a1a2e; border-radius: 12px; border: 1px solid #2d2d4e; margin-bottom: 16px; text-align: center;">
-        <div style="font-size: 36px; margin-bottom: 8px;">\u{1F3E0}</div>
-        <h3 style="margin: 0 0 4px; color: #e0e0e0;">Welcome to Rennie</h3>
-        <p style="color: #a0a0a0; margin: 0 0 16px; font-size: 13px;">Sign in with your GitHub account to connect to RentHero.</p>
+      loginDiv.innerHTML = `<div style="padding: 24px; background: var(--background-secondary); border-radius: 14px; border: 1px solid var(--background-modifier-border); margin-bottom: 16px; text-align: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="80" height="80" style="margin-bottom: 12px;">
+          <rect x="24" y="40" width="72" height="58" rx="8" fill="#E8846B"/>
+          <polygon points="60,10 18,44 102,44" fill="#CC6B52"/>
+          <rect x="80" y="16" width="8" height="20" rx="2" fill="#E8846B"/>
+          <circle cx="46" cy="62" r="8" fill="#1A1A1A"/><circle cx="43" cy="59" r="3" fill="#FFF" opacity="0.85"/>
+          <circle cx="74" cy="62" r="8" fill="#1A1A1A"/><circle cx="71" cy="59" r="3" fill="#FFF" opacity="0.85"/>
+          <ellipse cx="36" cy="72" rx="6" ry="3.5" fill="#CC6B52" opacity="0.35"/>
+          <ellipse cx="84" cy="72" rx="6" ry="3.5" fill="#CC6B52" opacity="0.35"/>
+          <path d="M52 78 Q60 84 68 78" fill="none" stroke="#CC6B52" stroke-width="2" stroke-linecap="round"/>
+          <rect x="53" y="82" width="14" height="16" rx="7" fill="#CC6B52" opacity="0.4"/>
+          <ellipse cx="40" cy="100" rx="10" ry="6" fill="#E8846B"/>
+          <ellipse cx="80" cy="100" rx="10" ry="6" fill="#E8846B"/>
+        </svg>
+        <h3 style="margin: 0 0 4px; color: var(--text-normal); font-size: 18px;">Welcome to Rennie</h3>
+        <p style="color: var(--text-muted); margin: 0 0 16px; font-size: 14px;">Sign in with your GitHub account to connect.</p>
       </div>`;
       new import_obsidian4.Setting(containerEl).setName("Login with GitHub").setDesc("Authenticates via your organization's GitHub account").addButton(
         (btn) => btn.setButtonText("\u{1F511} Login with GitHub").setCta().onClick(() => {

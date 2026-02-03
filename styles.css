@@ -1,3 +1,11 @@
+/* ── Rennie Brand Colors ── */
+:root {
+  --rennie-coral: #E8846B;
+  --rennie-coral-dim: rgba(232, 132, 107, 0.15);
+  --rennie-coral-subtle: rgba(232, 132, 107, 0.06);
+  --rennie-dark: #CC6B52;
+}
+
 /* Rennie Chat Container */
 .rennie-chat-container {
   display: flex;
@@ -10,10 +18,32 @@
 .rennie-messages {
   flex: 1;
   overflow-y: auto;
-  padding: 12px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+/* Welcome State */
+.rennie-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px 24px;
+  text-align: center;
+}
+
+.rennie-welcome-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-normal);
+  margin-bottom: 4px;
+}
+
+.rennie-welcome-hint {
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
 /* Individual Message */
@@ -25,10 +55,11 @@
 }
 
 .rennie-message.rennie-user {
-  background: var(--interactive-accent);
-  color: var(--text-on-accent);
+  background: var(--rennie-coral);
+  color: #0a0a1a;
   align-self: flex-end;
   border-bottom-right-radius: 4px;
+  font-weight: 500;
 }
 
 .rennie-message.rennie-assistant {
@@ -120,7 +151,8 @@
 
 .rennie-input:focus {
   outline: none;
-  border-color: var(--interactive-accent);
+  border-color: var(--rennie-coral);
+  box-shadow: 0 0 0 2px var(--rennie-coral-dim);
 }
 
 .rennie-input::placeholder {
@@ -148,17 +180,21 @@
 }
 
 .rennie-send-btn {
-  padding: 8px 16px;
-  background: var(--interactive-accent);
-  color: var(--text-on-accent);
+  padding: 8px 18px;
+  background: var(--rennie-coral);
+  color: #0a0a1a;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 14px;
+  transition: transform 0.15s, box-shadow 0.15s;
 }
 
 .rennie-send-btn:hover {
-  background: var(--interactive-accent-hover);
+  background: var(--rennie-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--rennie-coral-dim);
 }
 
 /* Settings */

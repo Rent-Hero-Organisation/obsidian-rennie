@@ -63,10 +63,32 @@ export class RennieView extends ItemView {
       }
     });
 
-    // Welcome message
+    // Welcome state with Rennie visual
+    const welcomeEl = this.messagesEl.createDiv({ cls: "rennie-welcome" });
+    welcomeEl.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="64" height="64" style="margin-bottom: 8px; opacity: 0.9;">
+        <g>
+          <animateTransform attributeName="transform" type="translate" values="0,0; 0,-1; 0,0" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"/>
+          <rect x="24" y="40" width="72" height="58" rx="8" fill="#E8846B"/>
+          <polygon points="60,10 18,44 102,44" fill="#CC6B52"/>
+          <rect x="80" y="16" width="8" height="20" rx="2" fill="#E8846B"/>
+          <circle cx="46" cy="62" r="8" fill="#1A1A1A"/><circle cx="43" cy="59" r="3" fill="#FFF" opacity="0.85"/>
+          <circle cx="74" cy="62" r="8" fill="#1A1A1A"/><circle cx="71" cy="59" r="3" fill="#FFF" opacity="0.85"/>
+          <ellipse cx="36" cy="72" rx="6" ry="3.5" fill="#CC6B52" opacity="0.35"/>
+          <ellipse cx="84" cy="72" rx="6" ry="3.5" fill="#CC6B52" opacity="0.35"/>
+          <path d="M52 78 Q60 84 68 78" fill="none" stroke="#CC6B52" stroke-width="2" stroke-linecap="round"/>
+          <ellipse cx="40" cy="100" rx="10" ry="6" fill="#E8846B"/>
+          <ellipse cx="80" cy="100" rx="10" ry="6" fill="#E8846B"/>
+        </g>
+      </svg>
+      <div class="rennie-welcome-text">Ask me anything</div>
+      <div class="rennie-welcome-hint">I know your vault. Try ⌘+Enter to send.</div>
+    `;
+
+    // Also add as first message for history
     this.addMessage({
       role: "assistant",
-      content: "Hey! 🏠 I'm Rennie, your RentHero assistant. Ask me anything, or ask me to create/edit notes.",
+      content: "Hey! I'm Rennie — ask me anything, or ask me to create and edit notes.",
       timestamp: Date.now(),
     });
   }

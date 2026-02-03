@@ -7,8 +7,8 @@
 <h1 align="center">Rennie</h1>
 
 <p align="center">
-  <strong>AI-powered knowledge hub for Obsidian</strong><br>
-  <sub>Chat with your AI teammate · Sync your vault · Stay in flow</sub>
+  <strong>AI-powered knowledge hub for your team</strong><br>
+  <sub>Chat with Rennie · Sync your vault · Stay in flow</sub>
 </p>
 
 <p align="center">

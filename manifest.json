@@ -1,9 +1,9 @@
 {
   "id": "obsidian-renthero-sync",
-  "name": "RentHero Sync",
-  "version": "0.7.0",
+  "name": "Rennie",
+  "version": "0.8.0",
   "minAppVersion": "1.0.0",
-  "description": "Team vault sync & AI chat for RentHero. Chat with Thad, sync research docs, decisions, and project files bidirectionally.",
-  "author": "RentHero (forked from Andy Bold's obsidian-openclaw)",
+  "description": "AI-powered knowledge hub for your team. Chat with Rennie, sync notes & research bidirectionally.",
+  "author": "RentHero",
   "isDesktopOnly": false
 }
