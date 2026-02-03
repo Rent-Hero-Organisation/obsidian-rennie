@@ -641,8 +641,7 @@ var RENTHERO_SYNC_PATHS = [
   { remotePath: "notes", localPath: "RentHero/Notes", enabled: true },
   { remotePath: "trello", localPath: "RentHero/Trello", enabled: true },
   { remotePath: "templates", localPath: "RentHero/Templates", enabled: true },
-  { remotePath: "inbox", localPath: "RentHero/Inbox", enabled: true },
-  { remotePath: "private", localPath: "RentHero/Private", enabled: true }
+  { remotePath: "inbox", localPath: "RentHero/Inbox", enabled: true }
 ];
 var DEFAULT_SETTINGS = {
   gatewayUrl: "https://rennie.renthero.com/api",
@@ -655,6 +654,7 @@ var DEFAULT_SETTINGS = {
   syncEnabled: true,
   syncServerUrl: "https://rennie.renthero.com",
   syncPaths: [...RENTHERO_SYNC_PATHS],
+  customSyncPaths: [],
   syncInterval: 15,
   syncConflictBehavior: "ask"
 };
@@ -814,6 +814,65 @@ var RennieSettingTab = class extends import_obsidian4.PluginSettingTab {
           })
         );
       });
+      containerEl.createEl("h4", { text: "Custom Sync Folders" });
+      containerEl.createEl("p", {
+        text: "Add extra folders to sync. These are local to your vault and not shared with the team.",
+        cls: "setting-item-description"
+      });
+      if (!this.plugin.settings.customSyncPaths) {
+        this.plugin.settings.customSyncPaths = [];
+      }
+      const customPathsContainer = containerEl.createDiv({ cls: "rennie-custom-sync-paths" });
+      this.plugin.settings.customSyncPaths.forEach((pathConfig, index) => {
+        new import_obsidian4.Setting(customPathsContainer).setName(pathConfig.localPath).setDesc(`\u2194 server: ${pathConfig.remotePath}/`).addToggle(
+          (toggle) => toggle.setValue(pathConfig.enabled).onChange(async (value) => {
+            this.plugin.settings.customSyncPaths[index].enabled = value;
+            await this.plugin.saveSettings();
+          })
+        ).addButton(
+          (btn) => btn.setButtonText("\u2715").setWarning().onClick(async () => {
+            this.plugin.settings.customSyncPaths.splice(index, 1);
+            await this.plugin.saveSettings();
+            this.display();
+          })
+        );
+      });
+      const addPathContainer = containerEl.createDiv({ cls: "rennie-add-custom-path" });
+      let newRemotePath = "";
+      let newLocalPath = "";
+      const remoteInput = new import_obsidian4.Setting(addPathContainer).setName("Server folder").setDesc("Remote path on the sync server (e.g. 'private')").addText(
+        (text) => text.setPlaceholder("private").onChange((value) => {
+          newRemotePath = value.trim();
+        })
+      );
+      const localInput = new import_obsidian4.Setting(addPathContainer).setName("Vault folder").setDesc("Local path in your vault (e.g. 'RentHero/Private')").addText(
+        (text) => text.setPlaceholder("RentHero/Private").onChange((value) => {
+          newLocalPath = value.trim();
+        })
+      );
+      new import_obsidian4.Setting(addPathContainer).addButton(
+        (btn) => btn.setButtonText("+ Add Custom Folder").setCta().onClick(async () => {
+          if (!newRemotePath || !newLocalPath) {
+            new import_obsidian4.Notice("Both server folder and vault folder are required.");
+            return;
+          }
+          const allPaths = [
+            ...this.plugin.settings.syncPaths,
+            ...this.plugin.settings.customSyncPaths
+          ];
+          if (allPaths.some((p) => p.remotePath === newRemotePath)) {
+            new import_obsidian4.Notice(`'${newRemotePath}' is already configured.`);
+            return;
+          }
+          this.plugin.settings.customSyncPaths.push({
+            remotePath: newRemotePath,
+            localPath: newLocalPath,
+            enabled: true
+          });
+          await this.plugin.saveSettings();
+          this.display();
+        })
+      );
       containerEl.createEl("h4", { text: "Sync Actions" });
       const syncActionsContainer = containerEl.createDiv({ cls: "rennie-sync-actions" });
       const testBtn2 = syncActionsContainer.createEl("button", { text: "Test Connection" });
@@ -1127,7 +1186,11 @@ var SyncService = class {
     const totals = { pulled: 0, pushed: 0, conflicts: 0, errors: 0 };
     try {
       const settings = this.getSettings();
-      for (const pathConfig of settings.syncPaths) {
+      const allPaths = [
+        ...settings.syncPaths,
+        ...settings.customSyncPaths || []
+      ];
+      for (const pathConfig of allPaths) {
         if (!pathConfig.enabled)
           continue;
         const stats = await this.syncPath(pathConfig, onConflict);

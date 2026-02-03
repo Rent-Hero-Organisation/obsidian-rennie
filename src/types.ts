@@ -14,7 +14,6 @@ export const RENTHERO_SYNC_PATHS: SyncPathConfig[] = [
   { remotePath: "trello",    localPath: "RentHero/Trello",     enabled: true },
   { remotePath: "templates", localPath: "RentHero/Templates",  enabled: true },
   { remotePath: "inbox",     localPath: "RentHero/Inbox",      enabled: true },
-  { remotePath: "private",   localPath: "RentHero/Private",    enabled: true },
 ];
 
 export interface RennieSettings {
@@ -29,6 +28,7 @@ export interface RennieSettings {
   syncEnabled: boolean;
   syncServerUrl: string;
   syncPaths: SyncPathConfig[];
+  customSyncPaths: SyncPathConfig[]; // User-defined extra sync paths (not shared via plugin updates)
   syncInterval: number; // minutes, 0 = manual only
   syncConflictBehavior: "ask" | "preferLocal" | "preferRemote";
 }
@@ -44,6 +44,7 @@ export const DEFAULT_SETTINGS: RennieSettings = {
   syncEnabled: true,
   syncServerUrl: "https://rennie.renthero.com",
   syncPaths: [...RENTHERO_SYNC_PATHS],
+  customSyncPaths: [],
   syncInterval: 15,
   syncConflictBehavior: "ask",
 };

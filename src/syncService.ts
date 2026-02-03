@@ -309,7 +309,13 @@ export class SyncService {
     try {
       const settings = this.getSettings();
       
-      for (const pathConfig of settings.syncPaths) {
+      // Merge standard + custom sync paths
+      const allPaths = [
+        ...settings.syncPaths,
+        ...(settings.customSyncPaths || []),
+      ];
+      
+      for (const pathConfig of allPaths) {
         if (!pathConfig.enabled) continue;
         
         const stats = await this.syncPath(pathConfig, onConflict);

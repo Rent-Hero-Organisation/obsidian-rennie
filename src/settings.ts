@@ -256,6 +256,90 @@ export class RennieSettingTab extends PluginSettingTab {
           );
       });
 
+      // Custom sync paths — user-defined, not shared via plugin updates
+      containerEl.createEl("h4", { text: "Custom Sync Folders" });
+      containerEl.createEl("p", {
+        text: "Add extra folders to sync. These are local to your vault and not shared with the team.",
+        cls: "setting-item-description"
+      });
+
+      // Ensure customSyncPaths exists (migration from older versions)
+      if (!this.plugin.settings.customSyncPaths) {
+        this.plugin.settings.customSyncPaths = [];
+      }
+
+      const customPathsContainer = containerEl.createDiv({ cls: "rennie-custom-sync-paths" });
+
+      this.plugin.settings.customSyncPaths.forEach((pathConfig, index) => {
+        new Setting(customPathsContainer)
+          .setName(pathConfig.localPath)
+          .setDesc(`↔ server: ${pathConfig.remotePath}/`)
+          .addToggle((toggle) =>
+            toggle
+              .setValue(pathConfig.enabled)
+              .onChange(async (value) => {
+                this.plugin.settings.customSyncPaths[index].enabled = value;
+                await this.plugin.saveSettings();
+              })
+          )
+          .addButton((btn) =>
+            btn.setButtonText("✕").setWarning().onClick(async () => {
+              this.plugin.settings.customSyncPaths.splice(index, 1);
+              await this.plugin.saveSettings();
+              this.display(); // Refresh
+            })
+          );
+      });
+
+      // Add custom path form
+      const addPathContainer = containerEl.createDiv({ cls: "rennie-add-custom-path" });
+      let newRemotePath = "";
+      let newLocalPath = "";
+
+      const remoteInput = new Setting(addPathContainer)
+        .setName("Server folder")
+        .setDesc("Remote path on the sync server (e.g. 'private')")
+        .addText((text) =>
+          text.setPlaceholder("private").onChange((value) => {
+            newRemotePath = value.trim();
+          })
+        );
+
+      const localInput = new Setting(addPathContainer)
+        .setName("Vault folder")
+        .setDesc("Local path in your vault (e.g. 'RentHero/Private')")
+        .addText((text) =>
+          text.setPlaceholder("RentHero/Private").onChange((value) => {
+            newLocalPath = value.trim();
+          })
+        );
+
+      new Setting(addPathContainer)
+        .addButton((btn) =>
+          btn.setButtonText("+ Add Custom Folder").setCta().onClick(async () => {
+            if (!newRemotePath || !newLocalPath) {
+              new Notice("Both server folder and vault folder are required.");
+              return;
+            }
+            // Check for duplicates
+            const allPaths = [
+              ...this.plugin.settings.syncPaths,
+              ...this.plugin.settings.customSyncPaths,
+            ];
+            if (allPaths.some(p => p.remotePath === newRemotePath)) {
+              new Notice(`'${newRemotePath}' is already configured.`);
+              return;
+            }
+            this.plugin.settings.customSyncPaths.push({
+              remotePath: newRemotePath,
+              localPath: newLocalPath,
+              enabled: true,
+            });
+            await this.plugin.saveSettings();
+            this.display(); // Refresh
+          })
+        );
+
       // Sync actions
       containerEl.createEl("h4", { text: "Sync Actions" });
 
