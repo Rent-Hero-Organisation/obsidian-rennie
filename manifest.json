@@ -1,7 +1,7 @@
 {
   "id": "obsidian-renthero-sync",
   "name": "Rennie",
-  "version": "0.8.0",
+  "version": "0.8.2",
   "minAppVersion": "1.0.0",
   "description": "AI-powered knowledge hub for your team. Chat with Rennie, sync notes & research bidirectionally.",
   "author": "RentHero",
