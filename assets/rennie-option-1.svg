@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="512" height="512">
+  <!-- Option 1: Round blob with tiny house roof -->
+  <!-- Inspired by OpenClaw's round blob shape -->
+  
+  <!-- Body - round blob -->
+  <ellipse cx="60" cy="68" rx="38" ry="36" fill="#D4764E"/>
+  
+  <!-- Little roof hat -->
+  <polygon points="60,14 36,36 84,36" fill="#B85E3A"/>
+  
+  <!-- Chimney on roof -->
+  <rect x="72" y="16" width="6" height="14" rx="1" fill="#B85E3A"/>
+  
+  <!-- Eyes -->
+  <circle cx="48" cy="62" r="6" fill="#1A1A1A"/>
+  <circle cx="72" cy="62" r="6" fill="#1A1A1A"/>
+  
+  <!-- Eye shine -->
+  <circle cx="46" cy="60" r="2" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="70" cy="60" r="2" fill="#FFFFFF" opacity="0.8"/>
+  
+  <!-- Little smile -->
+  <path d="M52 76 Q60 82 68 76" fill="none" stroke="#B85E3A" stroke-width="2.5" stroke-linecap="round"/>
+  
+  <!-- Stubby arms -->
+  <ellipse cx="23" cy="68" rx="6" ry="4" fill="#D4764E"/>
+  <ellipse cx="97" cy="68" rx="6" ry="4" fill="#D4764E"/>
+  
+  <!-- Stubby feet -->
+  <ellipse cx="45" cy="102" rx="8" ry="5" fill="#D4764E"/>
+  <ellipse cx="75" cy="102" rx="8" ry="5" fill="#D4764E"/>
+</svg>
