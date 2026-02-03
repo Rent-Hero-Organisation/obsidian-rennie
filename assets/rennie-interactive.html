@@ -1,0 +1,134 @@
+<!-- Rennie Interactive — eyes follow cursor, blinks, breathes -->
+<div id="rennie-container" style="display:inline-block;position:relative;width:200px;height:200px;cursor:default;">
+<svg id="rennie-interactive" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="200" height="200">
+  <g id="rennie-body">
+    <animateTransform attributeName="transform" type="translate" values="0,0; 0,-1.5; 0,0" dur="3s" repeatCount="indefinite"/>
+
+    <rect x="24" y="40" width="72" height="58" rx="8" fill="#E8846B"/>
+    <polygon points="60,10 18,44 102,44" fill="#CC6B52"/>
+    <rect x="80" y="16" width="8" height="20" rx="2" fill="#E8846B"/>
+
+    <!-- Smoke -->
+    <circle cx="84" cy="10" r="3.5" fill="#E8846B" opacity="0">
+      <animate attributeName="cy" values="10;-8" dur="2.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;0" dur="2.5s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="3;5" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="87" cy="8" r="2.5" fill="#E8846B" opacity="0">
+      <animate attributeName="cy" values="8;-12" dur="3s" begin="0.8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;0" dur="3s" begin="0.8s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Left eye socket -->
+    <circle cx="46" cy="62" r="9" fill="#1A1A1A"/>
+    <!-- Left pupil (moves) -->
+    <g id="left-pupil">
+      <circle cx="46" cy="62" r="5" fill="#2A2A2A"/>
+      <circle cx="44" cy="60" r="2.5" fill="#FFFFFF" opacity="0.9"/>
+    </g>
+    <!-- Left blink lid -->
+    <clipPath id="lClip"><circle cx="46" cy="62" r="9.5"/></clipPath>
+    <rect id="left-lid" x="36" y="44" width="20" height="0" fill="#E8846B" clip-path="url(#lClip)"/>
+
+    <!-- Right eye socket -->
+    <circle cx="74" cy="62" r="9" fill="#1A1A1A"/>
+    <!-- Right pupil (moves) -->
+    <g id="right-pupil">
+      <circle cx="74" cy="62" r="5" fill="#2A2A2A"/>
+      <circle cx="72" cy="60" r="2.5" fill="#FFFFFF" opacity="0.9"/>
+    </g>
+    <!-- Right blink lid -->
+    <clipPath id="rClip"><circle cx="74" cy="62" r="9.5"/></clipPath>
+    <rect id="right-lid" x="64" y="44" width="20" height="0" fill="#E8846B" clip-path="url(#rClip)"/>
+
+    <!-- Cheeks -->
+    <ellipse cx="36" cy="72" rx="6" ry="3.5" fill="#CC6B52" opacity="0.35"/>
+    <ellipse cx="84" cy="72" rx="6" ry="3.5" fill="#CC6B52" opacity="0.35"/>
+
+    <!-- Smile -->
+    <path id="mouth" d="M52 78 Q60 84 68 78" fill="none" stroke="#CC6B52" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Door -->
+    <rect x="53" y="82" width="14" height="16" rx="7" fill="#CC6B52" opacity="0.4"/>
+
+    <!-- Feet -->
+    <ellipse cx="40" cy="100" rx="10" ry="6" fill="#E8846B">
+      <animateTransform attributeName="transform" type="rotate" values="-2,40,100; 2,40,100; -2,40,100" dur="3s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="80" cy="100" rx="10" ry="6" fill="#E8846B">
+      <animateTransform attributeName="transform" type="rotate" values="2,80,100; -2,80,100; 2,80,100" dur="3s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+</svg>
+</div>
+
+<script>
+(function() {
+  const container = document.getElementById('rennie-container');
+  const svg = document.getElementById('rennie-interactive');
+  const leftPupil = document.getElementById('left-pupil');
+  const rightPupil = document.getElementById('right-pupil');
+  const leftLid = document.getElementById('left-lid');
+  const rightLid = document.getElementById('right-lid');
+  const mouth = document.getElementById('mouth');
+
+  const LEFT_EYE = { cx: 46, cy: 62 };
+  const RIGHT_EYE = { cx: 74, cy: 62 };
+  const MAX_MOVE = 3.5;
+
+  // Eye tracking
+  function updateEyes(mouseX, mouseY) {
+    const rect = svg.getBoundingClientRect();
+    const svgX = (mouseX - rect.left) / rect.width * 120;
+    const svgY = (mouseY - rect.top) / rect.height * 120;
+
+    [
+      { el: leftPupil, eye: LEFT_EYE },
+      { el: rightPupil, eye: RIGHT_EYE }
+    ].forEach(({ el, eye }) => {
+      const dx = svgX - eye.cx;
+      const dy = svgY - eye.cy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const clamp = Math.min(dist, MAX_MOVE * 10) / 10;
+      const angle = Math.atan2(dy, dx);
+      const tx = Math.cos(angle) * clamp;
+      const ty = Math.sin(angle) * clamp;
+      el.setAttribute('transform', `translate(${tx}, ${ty})`);
+    });
+  }
+
+  document.addEventListener('mousemove', (e) => updateEyes(e.clientX, e.clientY));
+
+  // Blink
+  let blinking = false;
+  function blink() {
+    if (blinking) return;
+    blinking = true;
+    const dur = 150;
+    leftLid.setAttribute('height', '24');
+    rightLid.setAttribute('height', '24');
+    setTimeout(() => {
+      leftLid.setAttribute('height', '0');
+      rightLid.setAttribute('height', '0');
+      blinking = false;
+    }, dur);
+  }
+
+  // Random blinks
+  function scheduleBlink() {
+    const delay = 2000 + Math.random() * 4000;
+    setTimeout(() => { blink(); scheduleBlink(); }, delay);
+  }
+  scheduleBlink();
+
+  // Smile widens on hover
+  container.addEventListener('mouseenter', () => {
+    mouth.setAttribute('d', 'M49 77 Q60 88 71 77');
+    mouth.setAttribute('stroke-width', '2.5');
+  });
+  container.addEventListener('mouseleave', () => {
+    mouth.setAttribute('d', 'M52 78 Q60 84 68 78');
+    mouth.setAttribute('stroke-width', '2');
+  });
+})();
+</script>
